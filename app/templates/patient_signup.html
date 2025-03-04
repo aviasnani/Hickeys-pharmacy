@@ -1,0 +1,61 @@
+{% block title %} Patient Signup {% endblock %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <input
+        type="text"
+        name="first_name"
+        id="fname"
+        placeholder="Enter your first name"
+      />
+      <br />
+      <input
+        type="text"
+        name="last_name"
+        id="lname"
+        placeholder="Enter your last name"
+      />
+      <br />
+      <button onclick="submit()">Signup</button>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+
+<script>
+  function submit() {
+    var fname = document.getElementById("fname").value;
+    var lname = document.getElementById("lname").value;
+    var data = {
+      first_name: fname,
+      last_name: lname,
+    };
+    console.log(data);
+    fetch(`${window.origin}/patient_signup/patient_details`, {
+      method: "POST", // details will be posted to the corresponding route / function in python
+      credentials: "include", // cookies
+      body: JSON.stringify(data), // data to be sent to the server, object 'data' is converted to JSON string
+      cache: "no-cache", // no cache included
+      headers: new Headers({
+        // headers to be included in the request
+        "content-type": "application/json",
+      }),
+    })
+      .then(function (response) {
+        // response from the server
+        if (response.status !== 200) {
+          console.log(`Response status was not 200: ${response.status}`);
+          return;
+        }
+        response.json().then(function (data) {
+          //   converting response from the server from json to js object and passing it to then function
+          console.log(data); // consoling it to see the data
+        });
+      })
+      .catch(function (error) {
+        console.log(`Fetch error: ${error}`);
+      });
+  }
+</script>
+
+{% endblock %}
