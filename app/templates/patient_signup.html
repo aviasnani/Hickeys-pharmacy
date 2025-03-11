@@ -16,6 +16,22 @@
         placeholder="Enter your last name"
       />
       <br />
+      <input type="number" name="age" id="age" placeholder="Enter your age" />
+      <br />
+      <input
+        type="number"
+        name="phone_number"
+        id="phone_number"
+        placeholder="Enter your phone number"
+      />
+      <br />
+      <input
+        type="date"
+        name="date_of_birth"
+        id="dob"
+        placeholder="Enter your date of birth"
+      />
+      <br />
       <button onclick="submit()">Signup</button>
     </div>
   </div>
@@ -26,9 +42,15 @@
   function submit() {
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
+    var age = document.getElementById("age").value;
+    var phone_number = document.getElementById("phone_number").value;
+    var dob = document.getElementById("dob").value;
     var data = {
       first_name: fname,
       last_name: lname,
+      age: age,
+      phone_number: phone_number,
+      date_of_birth: dob,
     };
     console.log(data);
     fetch(`${window.origin}/patient_signup/patient_details`, {
