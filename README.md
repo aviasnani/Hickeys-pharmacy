@@ -16,7 +16,7 @@ Features:
 3. Python (Backend)
 4. Flask (Backend)
 5. SQL (Database)
-6. Fetch APIs for communications between frontend and backend through API calls.
+6. Fetch APIs for communication between frontend and backend through API calls.
 
 ## References :
 
