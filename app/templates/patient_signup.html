@@ -33,6 +33,7 @@
       />
       <br />
       <button onclick="submit()">Signup</button>
+      <p id="backend-res"></p>
     </div>
   </div>
 </div>
@@ -52,7 +53,6 @@
       phone_number: phone_number,
       date_of_birth: dob,
     };
-    console.log(data);
     fetch(`${window.origin}/patient_signup/patient_details`, {
       method: "POST", // details will be posted to the corresponding route / function in python
       credentials: "include", // cookies
@@ -71,6 +71,9 @@
         }
         response.json().then(function (data) {
           //   converting response from the server from json to js object and passing it to then function
+          let responded = document.getElementById("backend-res"); // getting the paragraph tag
+          responded.innerHTML = JSON.stringify(data); // displaying the data in the paragraph tag
+          console.log("Data sent from backend to the frontend");
           console.log(data); // consoling it to see the data
         });
       })

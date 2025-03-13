@@ -17,7 +17,7 @@ def patient_signup():
 @app.route('/patient_signup/patient_details', methods=['POST'])
 def patient_details():
     req = request.get_json() # get the data from the object where the form details are stored in js and convert it to python dictionary
-    print(req) # print the data retrieved from the object
+    print("Data has been received",req) # print the data retrieved from the object
     res = make_response(jsonify(req), 200) # send a response back to the object
     return res
 
