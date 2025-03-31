@@ -32,11 +32,40 @@
         placeholder="Enter your date of birth"
       />
       <br />
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Enter your username"
+      />
+      <br />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Enter your password"
+      />
+      <br />
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        placeholder="Confirm your password"
+      />
+      <br />
       <button onclick="submit()">Signup</button>
       <p id="backend-res"></p>
     </div>
   </div>
 </div>
+<table class="table">
+  <tr class="info">
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Age</th>
+  </tr>
+  <tbody class="tableBody"></tbody>
+</table>
 {% endblock %} {% block script %}
 
 <script>
@@ -46,12 +75,18 @@
     var age = document.getElementById("age").value;
     var phone_number = document.getElementById("phone_number").value;
     var dob = document.getElementById("dob").value;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var confirm_password = document.getElementById("confirm_password").value;
     var data = {
       first_name: fname,
       last_name: lname,
       age: age,
       phone_number: phone_number,
       date_of_birth: dob,
+      username: username,
+      password: password,
+      confirm_password: confirm_password,
     };
     fetch(`${window.origin}/patient_signup/patient_details`, {
       method: "POST", // details will be posted to the corresponding route / function in python
@@ -72,7 +107,7 @@
         response.json().then(function (data) {
           //   converting response from the server from json to js object and passing it to then function
           let responded = document.getElementById("backend-res"); // getting the paragraph tag
-          const data_string = `Name: ${data.first_name} ${data.last_name}, Age: ${data.age}, Phone Number: ${data.phone_number}, Date of Birth: ${data.date_of_birth}`; // creating a string to display the data
+          const data_string = `Name: ${data.first_name} ${data.last_name}, Age: ${data.age}, Phone Number: ${data.phone_number}, Date of Birth: ${data.date_of_birth}, username: ${data.username}, password: ${data.password}`; // creating a string to display the data
           responded.innerHTML = data_string; // displaying the data in the paragraph tag
           console.log("Data sent from backend to the frontend");
           console.log(data); // consoling it to see the data
