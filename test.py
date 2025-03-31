@@ -1,10 +1,12 @@
 from flask import Flask, render_template, redirect, request, url_for, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 import os
-from pathlib import Path
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 
+
+bcrypt = Bcrypt(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 instance_path = os.path.join(basedir, 'instance')
 if not os.path.exists(instance_path):
@@ -41,6 +43,9 @@ def patient_details():
     req = request.get_json() # get the data from the object where the form details are stored in js and convert it to python dictionary
     print("Data has been received",req) # print the data retrieved from the object
     res = make_response(jsonify(req), 200) # send a response back to the object
+    if req['password'] != req['confirm_password']:
+        return jsonify({"error": "Passwords do not match"}), 400
+    hashed_password = bcrypt.generate_password_hash(req['password']).decode('utf-8')
     new_patient = Patient( 
         fname=req['first_name'],
         lname=req['last_name'],
@@ -48,15 +53,26 @@ def patient_details():
         phone=req['phone_number'],
         dob=req['date_of_birth'],
         username=req['username'],
-        password=req['password']
+        password= hashed_password
 )
     db.session.add(new_patient)
     db.session.commit()
     return res
+'''
+@app.route('/patient_login/patient_login_details)', methods=['POST'])
+def patient_login_details():
+    req = request.get_json()
+    print("Data has been received",req)
+    existing_patient = Patient.query.filter_by(username=req['username']).first()
+    if existing_patient and bcrypt.check_password_hash(existing_patient.password, req['password']):
+        return jsonify({"message": "Login successful"}), 200
+    else:
+        return jsonify({"error": "Invalid username or password"}), 401 '''
+
 
 
 with app.app_context():
-    db.create_all()     
+        db.create_all()     
 
 if __name__ == '__main__':
     app.run(debug=True)
