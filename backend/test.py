@@ -8,10 +8,10 @@ app = Flask(__name__, template_folder="../frontend/templates")
 
 
 bcrypt = Bcrypt(app)
-basedir = os.path.abspath(os.path.dirname(__file__))
-instance_path = os.path.join(basedir, 'instance')
-if not os.path.exists(instance_path):
-    os.makedirs(instance_path)
+basedir = os.path.abspath(os.path.dirname(__file__)) # (co-pilot)
+instance_path = os.path.join(basedir, 'instance') # (co-pilot)
+if not os.path.exists(instance_path): # (co-pilot)
+    os.makedirs(instance_path) # (co-pilot) 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(instance_path, 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Avoids a warning
 db = SQLAlchemy(app) 
@@ -60,6 +60,19 @@ def patient_details():
     db.session.commit()
     return res
 
+@app.route('/patient_login')
+def patient_login():
+    return render_template('patient_login.html')
+
+@app.route('/patient_login/patient_login_details', methods=['POST'])
+def patient_login_details():
+    req = request.get_json()
+    print("Data has been received",req)
+    existing_patient = Patient.query.filter_by(username=req['username']).first()
+    if existing_patient and bcrypt.check_password_hash(existing_patient.password, req['password']):
+        return jsonify({"message": "Login successful"}), 200
+    else:
+        return jsonify({"error": "Invalid username or password"}), 401 
 
 with app.app_context():
         db.create_all()     
