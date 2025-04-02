@@ -54,7 +54,7 @@
       />
       <br />
       <a href="{{url_for('patient_login')}}"
-        ><button onclick="submit()">Signup</button></a
+        ><button onclick="submit(event)">Signup</button></a
       >
       <p id="backend-res"></p>
     </div>
@@ -71,7 +71,8 @@
 {% endblock %} {% block script %}
 
 <script>
-  function submit() {
+  function submit(event) {
+    event.preventDefault(); // prevent the default form submission (co-pilot)
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var age = document.getElementById("age").value;
@@ -113,10 +114,8 @@
           });
         }
         response.json().then(function (data) {
+          window.location.href = "{{ url_for('patient_login') }}"; //co-pilot
           //   converting response from the server from json to js object and passing it to then function
-          let responded = document.getElementById("backend-res"); // getting the paragraph tag
-          const data_string = `Name: ${data.first_name} ${data.last_name}, Age: ${data.age}, Phone Number: ${data.phone_number}, Date of Birth: ${data.date_of_birth}, username: ${data.username}`; // creating a string to display the data
-          responded.innerHTML = data_string; // displaying the data in the paragraph tag
           console.log("Data sent from backend to the frontend");
           console.log(data); // consoling it to see the data
         });
