@@ -53,9 +53,7 @@
         placeholder="Confirm your password"
       />
       <br />
-      <a href="{{url_for('patient_login')}}"
-        ><button onclick="submit(event)">Signup</button></a
-      >
+      <button onclick="submit(event)">Signup</button>
       <p id="backend-res"></p>
     </div>
   </div>
@@ -72,7 +70,6 @@
 
 <script>
   function submit(event) {
-    event.preventDefault(); // prevent the default form submission (co-pilot)
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var age = document.getElementById("age").value;
