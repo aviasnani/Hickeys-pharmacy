@@ -4,6 +4,8 @@ import os
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import re
+from re import match
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -53,6 +55,14 @@ def patient_signup():
 @app.route('/patient_signup', methods=['POST'])
 def patient_details():
     req = request.get_json() # get the data from the object where the form details are stored in js and convert it to python dictionary
+    existing_username = Patient.query.filter_by(username=req['username']).first()
+    if existing_username:
+        return jsonify({"error": "Username already exists. Please choose a different one."}), 400
+    existing_phone = Patient.query.filter_by(phone=req['phone_number']).first()
+    if existing_phone:
+        return jsonify({"error": "Phone number already exists. Please choose a different one."}), 400
+    if len(req['phone_number']) < 9:
+        return jsonify({"error": "Phone number must be 10 digits long"}), 400
     print("Data has been received",req) # print the data retrieved from the object
     res = make_response(jsonify(req), 200) # send a response back to the object
     if req['password'] != req['confirm_password']:
