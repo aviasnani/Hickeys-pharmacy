@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Welcome</h1>
+
+    <button onclick="logout()">Logout</button>
+    <script>
+      function logout() {
+        fetch(`http://127.0.0.1:5000/patient_logout`, {
+          method: "GET", // details will be posted to the corresponding route / function in python
+          credentials: "include", // cookies
+          cache: "no-cache", // no cache included
+          headers: new Headers({
+            // headers to be included in the request
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            // response from the server
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              //   converting response from the server from json to js object and passing it to then function
+              window.location.href = "http://127.0.0.1:3000/patient_login.html"; // redirecting to the patient dashboard
+              console.log("Logout Successful"); // consoling it to see the data
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+    </script>
+  </body>
+</html>

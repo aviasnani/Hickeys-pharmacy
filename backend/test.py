@@ -3,9 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
-app = Flask(__name__, template_folder="../frontend/templates")
+app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "patient_login" 
 
+CORS(app, origins=["http://127.0.0.1:3000"], supports_credentials=True) # 
 
 bcrypt = Bcrypt(app)
 basedir = os.path.abspath(os.path.dirname(__file__)) # (co-pilot)
@@ -14,7 +19,13 @@ if not os.path.exists(instance_path): # (co-pilot)
     os.makedirs(instance_path) # (co-pilot) 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(instance_path, 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Avoids a warning
+app.config['SECRET_KEY'] = 'Iaminevitable'
 db = SQLAlchemy(app) 
+
+def load_user(user_id):
+    return Patient.query.get(int(user_id))
+
+login_manager.user_loader(load_user)
 
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,18 +39,18 @@ class Patient(db.Model):
 
 
 
-@app.route('/')
+'''@app.route('/')
 def index():  
     return render_template('index.html')
 
 
 @app.route('/patient_signup')
 def patient_signup():
-    return render_template('patient_signup.html')
+    return render_template('patient_signup.html')'''
 
 
 
-@app.route('/patient_signup/patient_details', methods=['POST'])
+@app.route('/patient_signup', methods=['POST'])
 def patient_details():
     req = request.get_json() # get the data from the object where the form details are stored in js and convert it to python dictionary
     print("Data has been received",req) # print the data retrieved from the object
@@ -60,11 +71,11 @@ def patient_details():
     db.session.commit()
     return res
 
-@app.route('/patient_login')
+'''@app.route('/patient_login')
 def patient_login():
-    return render_template('patient_login.html')
+    return render_template('patient_login.html')'''
 
-@app.route('/patient_login/patient_login_details', methods=['POST'])
+@app.route('/patient_login', methods=['POST'])
 def patient_login_details():
     req = request.get_json()
     print("Data has been received",req)
@@ -73,6 +84,17 @@ def patient_login_details():
         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401 
+
+'''@login_required
+@app.route('/patient_dashboard')
+def patient_dashboard():
+    return render_template('patient_dashboard.html')'''
+
+@app.route('/patient_logout')
+def patient_logout():
+    logout_user()
+    print("User logged out")
+    return jsonify({"message": "Logout successful"}), 200
 
 with app.app_context():
         db.create_all()     
