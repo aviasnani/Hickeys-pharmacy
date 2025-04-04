@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login</title>
+  </head>
+  <body>
+    <input
+      type="username"
+      name="username"
+      id="username"
+      placeholder="Enter your username"
+    />
+    <br />
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="Enter your password"
+    />
+    <br />
+    <button onclick="admin_login()">Login</button>
+    <p id="error"></p>
+    <script>
+      function admin_login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var data = {
+          username: username,
+          password: password,
+        };
+        fetch("http://127.0.0.1:5000/admin_login", {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(data),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        }).then(function (response) {
+          if (response.status !== 200) {
+            return response.json().then(function (data) {
+              let error = document.getElementById("error");
+              error_message = `Error: ${data.error}`;
+              error.innerHTML = data.error;
+            });
+          }
+          response.json().then(function (data) {
+            window.location.href = "http://127.0.0.1:3000/admin_dashboard.html";
+            console.log(`message: ${data.message}`);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

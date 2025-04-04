@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <input
+      type="text"
+      name="first_name"
+      id="first_name"
+      placeholder="Enter your first name"
+    />
+    <br />
+    <input
+      type="text"
+      name="last_name"
+      id="last_name"
+      placeholder="Enter your last name"
+    />
+    <br />
+    <input
+      type="email"
+      name="email"
+      id="email"
+      placeholder="Enter your email"
+    />
+    <br />
+    <input
+      type="text"
+      name="username"
+      id="username"
+      placeholder="Enter your username"
+    />
+    <br />
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="Set your password"
+    />
+    <br />
+    <input
+      type="password"
+      name="confirm_password"
+      id="confirm_password"
+      placeholder="Confirm your password"
+    />
+    <br />
+    <button onclick="admin_signup()">Signup</button> <br />
+    <p id="error-div"></p>
+
+    <script>
+      function admin_signup() {
+        var first_name = document.getElementById("first_name").value;
+        var last_name = document.getElementById("last_name").value;
+        var email = document.getElementById("email").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var confirm_password =
+          document.getElementById("confirm_password").value;
+        var data = {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          username: username,
+          password: password,
+          confirm_password: confirm_password,
+        };
+        fetch("http://127.0.0.1:5000/admin_signup", {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(data),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              return response.json().then(function (data) {
+                errors_div = document.getElementById("error-div");
+                var data_string = `Error: ${data.error}`;
+                errors_div.innerHTML = data_string;
+                console.log(`Response status was not 200: ${response.status}`);
+                return;
+              });
+            }
+            response.json().then(function (data) {
+              window.location.href = "http://127.0.0.1:3000/admin_login.html";
+              console.log(data);
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+    </script>
+  </body>
+</html>

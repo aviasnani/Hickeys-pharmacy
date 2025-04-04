@@ -6,12 +6,11 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Welcome Patient</h1>
-
+    <h1>Welcome Admin</h1>
     <button onclick="logout()">Logout</button>
     <script>
       function logout() {
-        fetch(`http://127.0.0.1:5000/patient_logout`, {
+        fetch(`http://127.0.0.1:5000/admin_logout`, {
           method: "GET", // details will be posted to the corresponding route / function in python
           credentials: "include", // cookies
           cache: "no-cache", // no cache included
@@ -28,7 +27,7 @@
             }
             response.json().then(function (data) {
               //   converting response from the server from json to js object and passing it to then function
-              window.location.href = "http://127.0.0.1:3000/patient_login.html"; // redirecting to the patient dashboard
+              window.location.href = "http://127.0.0.1:3000/admin_login.html"; // redirecting to the patient dashboard
               console.log("Logout Successful"); // consoling it to see the data
             });
           })

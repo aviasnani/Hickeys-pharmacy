@@ -12,7 +12,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "patient_login" 
 
-CORS(app, origins=["http://127.0.0.1:3000"], supports_credentials=True) # 
+CORS(app, origins=["http://127.0.0.1:3000", "http://192.168.1.15:3000"], supports_credentials=True) # 
 
 bcrypt = Bcrypt(app)
 basedir = os.path.abspath(os.path.dirname(__file__)) # (co-pilot)
@@ -39,6 +39,14 @@ class Patient(db.Model):
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
 
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fname = db.Column(db.String(20), nullable=False)
+    lname = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+
 
 
 '''@app.route('/')
@@ -50,7 +58,30 @@ def index():
 def patient_signup():
     return render_template('patient_signup.html')'''
 
-
+@app.route('/admin_signup', methods=['POST'])
+def admin_signup():
+    req = request.get_json()
+    print("Data has been received", req)
+    res = make_response(jsonify(req), 200)
+    existing_username = Admin.query.filter_by(username=req['username']).first() # queries the database for the username and checks if the entered username matches any of the usernames in the database
+    if existing_username:
+        return jsonify({"error": "Username already exists. Please choose a different one."}), 400
+    existing_email = Admin.query.filter_by(email=req['email']).first()
+    if existing_email:
+        return jsonify({"error": "Email already exists. Please choose a different one."}), 400
+    if req['password'] != req['confirm_password']:
+        return jsonify({"error": "Passwords do not match"}), 400
+    hashed_password = bcrypt.generate_password_hash(req['password']).decode('utf-8')
+    new_admin = Admin(
+        fname=req['first_name'],
+        lname=req['last_name'],
+        email=req['email'],
+        username=req['username'],
+        password=hashed_password
+    )
+    db.session.add(new_admin)
+    db.session.commit()
+    return res
 
 @app.route('/patient_signup', methods=['POST'])
 def patient_details():
@@ -100,8 +131,26 @@ def patient_login_details():
 def patient_dashboard():
     return render_template('patient_dashboard.html')'''
 
+@login_required
 @app.route('/patient_logout')
 def patient_logout():
+    logout_user()
+    print("User logged out")
+    return jsonify({"message": "Logout successful"}), 200
+
+@app.route('/admin_login', methods=['POST'])
+def admin_login():
+    req = request.get_json()
+    print("Data has been received", req)
+    existing_admin = Admin.query.filter_by(username=req['username']).first()
+    if existing_admin and bcrypt.check_password_hash(existing_admin.password, req['password']):
+        return jsonify({"message": "Login successful"}), 200
+    else:
+        return jsonify({"error": "Invalid username or password"}), 401
+
+@login_required
+@app.route('/admin_logout')
+def admin_logout():
     logout_user()
     print("User logged out")
     return jsonify({"message": "Logout successful"}), 200
