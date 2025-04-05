@@ -149,9 +149,19 @@ def admin_login():
 @app.route('/admin_dashboard', methods=['GET'])
 def admin_dashboard():
     data = Patient.query.all()
+    patients = []
     for patient in data:
-        for key, value in patient.items():
-            return jsonify({key: value})
+        patients.append({
+            "id": patient.id,
+            "fname": patient.fname,
+            "lname": patient.lname,
+            "age": patient.age,
+            "phone": patient.phone,
+            "dob": patient.dob,
+            "username": patient.username,
+            "password": patient.password
+        })
+    return jsonify(patients), 200
     
 
 @login_required
