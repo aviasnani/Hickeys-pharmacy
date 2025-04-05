@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, jsonify, make_response
+from flask import Flask, render_template, redirect, request, url_for, jsonify, make_response, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_bcrypt import Bcrypt
@@ -23,11 +23,15 @@ app.config['SECRET_KEY'] = 'Iaminevitable'
 db = SQLAlchemy(app) 
 
 def load_user(user_id):
-    return Patient.query.get(int(user_id))
+    patient = Patient.query.get(int(user_id))
+    if patient:
+        return patient
+    # If not patient, try admin
+    return Admin.query.get(int(user_id))
 
 login_manager.user_loader(load_user)
 
-class Patient(db.Model):
+class Patient(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(20), nullable=False)
@@ -37,7 +41,7 @@ class Patient(db.Model):
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
 
-class Admin(db.Model):
+class Admin(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(20), nullable=False)
@@ -142,15 +146,16 @@ def admin_login():
     print("Data has been received", req)
     existing_admin = Admin.query.filter_by(username=req['username']).first()
     if existing_admin and bcrypt.check_password_hash(existing_admin.password, req['password']):
+        login_user(existing_admin)  # This is crucial
         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 
 @app.route('/admin_dashboard', methods=['GET'])
 def admin_dashboard():
-    data = Patient.query.all()
+    patient_data = Patient.query.all()
     patients = []
-    for patient in data:
+    for patient in patient_data:
         patients.append({
             "id": patient.id,
             "fname": patient.fname,
@@ -159,9 +164,12 @@ def admin_dashboard():
             "phone": patient.phone,
             "dob": patient.dob,
             "username": patient.username,
-            "password": patient.password
         })
-    return jsonify(patients), 200
+    
+    return jsonify({
+        "patients": patients,
+        "admin_name": f'{current_user.fname} {current_user.lname}',
+    }), 200
     
 
 @login_required
