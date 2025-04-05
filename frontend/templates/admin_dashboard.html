@@ -6,9 +6,68 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Welcome Admin</h1>
+    <h1 id="h1"></h1>
     <button onclick="logout()">Logout</button>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Age</th>
+          <th>Phone Number</th>
+          <th>Date of Birth</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr></tr>
+      </tbody>
+    </table>
     <script>
+      function dashboardDetails() {
+        fetch("http://127.0.0.1:5000/admin_dashboard", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              var patients = data.patients;
+              var admin = data.admin_name;
+              var h1 = document.getElementById("h1");
+              h1.innerHTML = `Welcome ${admin}`;
+              const tableBody = document.getElementById("table-body");
+              patients.forEach((item) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.fname}</td>
+                <td>${item.lname}</td>
+                <td>${item.age}</td>
+                <td>${item.phone}</td>
+                <td>${item.dob}</td>
+                <td>${item.username}</td>
+              `;
+                tableBody.appendChild(row);
+              });
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        dashboardDetails();
+      });
+
       function logout() {
         fetch(`http://127.0.0.1:5000/admin_logout`, {
           method: "GET", // details will be posted to the corresponding route / function in python
