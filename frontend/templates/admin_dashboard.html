@@ -8,6 +8,22 @@
   <body>
     <h1>Welcome Admin</h1>
     <button onclick="logout()">Logout</button>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Age</th>
+          <th>Phone Number</th>
+          <th>Date of Birth</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr></tr>
+      </tbody>
+    </table>
     <script>
       function logout() {
         fetch(`http://127.0.0.1:5000/admin_logout`, {
@@ -35,6 +51,39 @@
             console.log(`Fetch error: ${error}`);
           });
       }
+      fetch("http://127.0.0.1:5000/admin_dashboard", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-cache",
+        headers: new Headers({
+          "content-type": "application/json",
+        }),
+      })
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.log(`Response status was not 200: ${response.status}`);
+            return;
+          }
+          response.json().then(function (data) {
+            const tableBody = document.getElementById("table-body");
+            data.forEach((item) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.first_name}</td>
+                <td>${item.last_name}</td>
+                <td>${item.age}</td>
+                <td>${item.phone_number}</td>
+                <td>${item.date_of_birth}</td>
+                <td>${item.username}</td>
+              `;
+              tableBody.appendChild(row);
+            });
+          });
+        })
+        .catch(function (error) {
+          console.log(`Fetch error: ${error}`);
+        });
     </script>
   </body>
 </html>

@@ -4,8 +4,6 @@ import os
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-import re
-from re import match
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -147,6 +145,14 @@ def admin_login():
         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401
+
+@app.route('/admin_dashboard', methods=['GET'])
+def admin_dashboard():
+    data = Patient.query.all()
+    for patient in data:
+        for key, value in patient.items():
+            return jsonify({key: value})
+    
 
 @login_required
 @app.route('/admin_logout')
