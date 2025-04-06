@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style></style>
   </head>
   <body>
     <h1 id="h1"></h1>
@@ -20,9 +21,7 @@
           <th>Username</th>
         </tr>
       </thead>
-      <tbody id="table-body">
-        <tr></tr>
-      </tbody>
+      <tbody id="table-body"></tbody>
     </table>
     <script>
       function dashboardDetails() {
@@ -55,9 +54,36 @@
                 <td>${item.phone}</td>
                 <td>${item.dob}</td>
                 <td>${item.username}</td>
+                <td><button onclick=deletePatient(${item.id})>Delete</button></td>
               `;
                 tableBody.appendChild(row);
               });
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+      function deletePatient(id) {
+        fetch("http://127.0.0.1:5000/delete_patient", {
+          method: "DELETE",
+          credentials: "include",
+          body: JSON.stringify({ id: id }),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              dashboardDetails(); // Refresh the dashboard details
             });
           })
           .catch(function (error) {

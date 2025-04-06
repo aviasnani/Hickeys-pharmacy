@@ -20,5 +20,5 @@ Features:
 ## References :
 
 1. Fetch APIs (Julian Nash): https://www.youtube.com/watch?v=QKcVjdLEX_s&t=165s
-1. Flask CRUD Operations (Parwiz Forogh): https://www.youtube.com/watch?v=XTpLbBJTOM4&t=3306s
-1. W3schools: https://www.w3schools.com
+2. Flask CRUD Operations (Parwiz Forogh): https://www.youtube.com/watch?v=XTpLbBJTOM4&t=3306s
+3. W3schools: https://www.w3schools.com

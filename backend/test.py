@@ -214,6 +214,23 @@ def admin_logout():
     print("User logged out")
     return jsonify({"message": "Logout successful"}), 200
 
+# co-pilot
+@app.route('/delete_patient', methods=['DELETE'])
+def delete_patient():
+    try:
+        req =  request.get_json()
+        patient_id = req['id']
+        patient = Patient.query.filter_by(id=patient_id).first()
+        if patient:
+            db.session.delete(patient)
+            db.session.commit()
+            return jsonify({"message": "Patient deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Patient not found"}), 404
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+
 with app.app_context():
         db.create_all()     
 
