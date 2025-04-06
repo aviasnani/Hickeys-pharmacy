@@ -6,10 +6,37 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Welcome Patient</h1>
+    <h1 id="h1"></h1>
 
     <button onclick="logout()">Logout</button>
     <script>
+      function dashboardDetails() {
+        fetch("http://127.0.0.1:5000/patient_dashboard", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              var patient_name = data.patient_name;
+              var h1 = document.getElementById("h1");
+              h1.innerHTML = `Welcome ${patient_name}`;
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        dashboardDetails();
+      });
       function logout() {
         fetch(`http://127.0.0.1:5000/patient_logout`, {
           method: "GET", // details will be posted to the corresponding route / function in python

@@ -5,9 +5,8 @@
 Features:
 
 1. Facilitates pharmacy workers to track medicine availability.
-2. POS system for pharmacy inventory.
-3. An interactive platform between patients and pharmacies.
-4. Streamlines medicine delivery process.
+2. An interactive platform between patients and pharmacies.
+3. Streamlines medicine delivery process.
 
 ## Technologies to be used:
 
@@ -21,3 +20,5 @@ Features:
 ## References :
 
 Fetch APIs (Julian Nash): https://www.youtube.com/watch?v=QKcVjdLEX_s&t=165s
+Flask CRUD Operations (Parwiz Forogh): https://www.youtube.com/watch?v=XTpLbBJTOM4&t=3306s
+W3schools: https://www.w3schools.com

@@ -137,10 +137,25 @@ def patient_login_details():
     else:
         return jsonify({"error": "Invalid username or password"}), 401 
 
-'''@login_required
+@login_required
 @app.route('/patient_dashboard')
 def patient_dashboard():
-    return render_template('patient_dashboard.html')'''
+    try:  # added a try block to check whether the user logged in is an admin or not (co-pilot)
+        # First verify this is an admin user
+        if not isinstance(current_user, Patient):
+            logout_user()
+            return jsonify({"error": "Unauthorized access"}), 403
+        
+        return jsonify({
+        "patient_name": f'{current_user.fname} {current_user.lname}',
+        "patient_age": current_user.age,
+        "patient_phone": current_user.phone,
+        "patient_dob": current_user.dob,
+        "patient_username": current_user.username,
+    }), 200
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 @login_required
 @app.route('/patient_logout')
