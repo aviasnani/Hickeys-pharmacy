@@ -10,6 +10,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "patient_login" 
 
+def unauthorized_handler(): # co-pilot 
+    if request.path.startswith('/admin'):
+        login_manager.login_view = 'admin_login'
+    else:
+        login_manager.login_view = 'patient_login'
+    return jsonify({"error": "Please log in"}), 401
+login_manager.unauthorized_handler(unauthorized_handler)
+
 CORS(app, origins=["http://127.0.0.1:3000", "http://192.168.1.15:3000"], supports_credentials=True) # 
 
 bcrypt = Bcrypt(app)
@@ -22,12 +30,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Avoids a warning
 app.config['SECRET_KEY'] = 'Iaminevitable'
 db = SQLAlchemy(app) 
 
+@login_manager.user_loader
 def load_user(user_id):
-    patient = Patient.query.get(int(user_id))
-    if patient:
-        return patient
-    # If not patient, try admin
-    return Admin.query.get(int(user_id))
+    role = session.get('role')
+    if role == 'admin':
+        return Admin.query.filter_by(id=int(user_id)).first()
+    elif role == 'patient':
+        return Patient.query.filter_by(id=int(user_id)).first()
+    return None
 
 login_manager.user_loader(load_user)
 
@@ -114,9 +124,6 @@ def patient_details():
     db.session.commit()
     return res
 
-'''@app.route('/patient_login')
-def patient_login():
-    return render_template('patient_login.html')'''
 
 @app.route('/patient_login', methods=['POST'])
 def patient_login_details():
@@ -124,6 +131,8 @@ def patient_login_details():
     print("Data has been received",req)
     existing_patient = Patient.query.filter_by(username=req['username']).first()
     if existing_patient and bcrypt.check_password_hash(existing_patient.password, req['password']):
+        login_user(existing_patient)  # This is crucial
+        session['role'] = 'patient'  # co-pilot
         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401 
@@ -146,17 +155,25 @@ def admin_login():
     print("Data has been received", req)
     existing_admin = Admin.query.filter_by(username=req['username']).first()
     if existing_admin and bcrypt.check_password_hash(existing_admin.password, req['password']):
-        login_user(existing_admin)  # This is crucial
-        return jsonify({"message": "Login successful"}), 200
+         print(f"Admin authenticated: {existing_admin.fname} {existing_admin.lname}")
+         print(f"Admin ID: {existing_admin.id}")
+         login_user(existing_admin)  # This is crucial
+         session['role'] = 'admin' # co-pilot
+         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 
 @app.route('/admin_dashboard', methods=['GET'])
 def admin_dashboard():
-    patient_data = Patient.query.all()
-    patients = []
-    for patient in patient_data:
-        patients.append({
+    try:  # added a try block to check whether the user logged in is an admin or not (co-pilot)
+        # First verify this is an admin user
+        if not isinstance(current_user, Admin):
+            logout_user()
+            return jsonify({"error": "Unauthorized access"}), 403
+        patient_data = Patient.query.all()
+        patients = []
+        for patient in patient_data:
+            patients.append({
             "id": patient.id,
             "fname": patient.fname,
             "lname": patient.lname,
@@ -166,11 +183,14 @@ def admin_dashboard():
             "username": patient.username,
         })
     
-    return jsonify({
+        return jsonify({
         "patients": patients,
         "admin_name": f'{current_user.fname} {current_user.lname}',
     }), 200
-    
+    except Exception as e: #throws an internal server error if the user is not authorized (co-pilot)
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+        
 
 @login_required
 @app.route('/admin_logout')

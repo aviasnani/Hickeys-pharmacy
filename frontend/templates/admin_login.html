@@ -43,7 +43,7 @@
             return response.json().then(function (data) {
               let error = document.getElementById("error");
               error_message = `Error: ${data.error}`;
-              error.innerHTML = data.error;
+              error.innerHTML = error_message;
             });
           }
           response.json().then(function (data) {
