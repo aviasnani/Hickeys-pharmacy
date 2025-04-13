@@ -9,6 +9,62 @@
   <body>
     <h1 id="h1"></h1>
     <button onclick="logout()">Logout</button>
+    <button id="show-add-form">Add</button>
+    <div id="add-patient-container" style="display: none; margin-top: 20px">
+      <h2>Add Patient</h2>
+
+      <input
+        type="text"
+        id="fname"
+        placeholder="First Name"
+        name="fname"
+        required
+      />
+      <input
+        type="text"
+        id="lname"
+        placeholder="Last Name"
+        name="lname"
+        required
+      />
+      <input type="number" id="age" placeholder="Age" name="age" required />
+      <input
+        type="text"
+        id="phone"
+        placeholder="Phone Number"
+        name="phone"
+        required
+      />
+      <input
+        type="text"
+        id="dob"
+        placeholder="Date of Birth"
+        name="dob"
+        required
+      />
+      <input
+        type="text"
+        id="username"
+        placeholder="Username"
+        name="username"
+        required
+      />
+      <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        name="password"
+        required
+      />
+      <input
+        id="confirm_password"
+        type="password"
+        placeholder="Confirm Password"
+        name="confirm_password"
+        required
+      />
+      <button onclick="add_patient()">Add Patient</button>
+    </div>
     <table id="table">
       <thead>
         <tr>
@@ -47,15 +103,15 @@
               patients.forEach((item) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                <td>${item.id}</td>
-                <td>${item.fname}</td>
-                <td>${item.lname}</td>
-                <td>${item.age}</td>
-                <td>${item.phone}</td>
-                <td>${item.dob}</td>
-                <td>${item.username}</td>
-                <td><button onclick=deletePatient(${item.id})>Delete</button></td>
-              `;
+                  <td>${item.id}</td>
+                  <td>${item.fname}</td>
+                  <td>${item.lname}</td>
+                  <td>${item.age}</td>
+                  <td>${item.phone}</td>
+                  <td>${item.dob}</td>
+                  <td>${item.username}</td>
+                  <td><button onclick=deletePatient(${item.id})>Delete</button></td>
+                `;
                 tableBody.appendChild(row);
               });
             });
@@ -64,6 +120,71 @@
             console.log(`Fetch error: ${error}`);
           });
       }
+
+      document
+        .getElementById("show-add-form")
+        .addEventListener("click", function () {
+          const container = document.getElementById("add-patient-container");
+          if (container.style.display === "none") {
+            container.style.display = "block";
+          } else {
+            container.style.display = "none";
+          }
+        });
+
+      function add_patient() {
+        const fname = document.getElementById("fname").value;
+        const lname = document.getElementById("lname").value;
+        const age = document.getElementById("age").value;
+        const phone = document.getElementById("phone").value;
+        const dob = document.getElementById("dob").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const confirm_password =
+          document.getElementById("confirm_password").value;
+
+        const data = {
+          fname: fname,
+          lname: lname,
+          age: age,
+          phone: phone,
+          dob: dob,
+          username: username,
+          password: password,
+          confirm_password: confirm_password,
+        };
+        if (data.password !== data.confirm_password) {
+          alert("Passwords do not match");
+          return;
+        }
+        fetch("http://127.0.0.1:5000/add_patients", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+
+              const tableBody = document.getElementById("table-body");
+              document.getElementById("add-patient-container").style.display =
+                "none";
+              tableBody.innerHTML = ""; // Clear the table body
+              dashboardDetails(); // Refresh the dashboard details
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+
       function deletePatient(id) {
         fetch("http://127.0.0.1:5000/delete_patient", {
           method: "DELETE",
@@ -91,6 +212,7 @@
           });
       }
       document.addEventListener("DOMContentLoaded", function () {
+        // calling dashboardDetails function when the page is loaded
         dashboardDetails();
       });
 

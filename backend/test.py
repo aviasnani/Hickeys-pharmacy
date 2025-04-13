@@ -231,6 +231,43 @@ def delete_patient():
         print("Error occurred:", str(e))
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/add_patients', methods=['POST'])
+@login_required
+def add_patients(): # this function does the same thing as the patient_signup function but is used to add patients from the admin dashboard
+    if not isinstance(current_user, Admin):
+        return jsonify({"error": "Unauthorized access"}), 403
+    try:
+        req = request.get_json()
+        existing_username = Patient.query.filter_by(username=req['username']).first()
+        existing_phone = Patient.query.filter_by(phone=req['phone']).first()
+        if existing_username:
+            return jsonify({"error": "Username already exists. Please choose a different one."}), 400
+        if existing_phone:
+            return jsonify({"error": "Phone number already exists. Please choose a different one."}), 400
+        if len(req['phone']) < 9:
+            return jsonify({"error": "Phone number must be 10 digits long"}), 400
+        if req['password'] != req['confirm_password']:
+            return jsonify({"error": "Passwords do not match"}), 400
+        hashed_password = bcrypt.generate_password_hash(req['password']).decode('utf-8')
+        new_patient = Patient( 
+            fname=req['fname'],
+            lname=req['lname'],
+            age=req['age'],
+            phone=req['phone'],
+            dob=req['dob'],
+            username=req['username'],
+            password= hashed_password
+        )
+        db.session.add(new_patient)
+        db.session.commit()
+        return jsonify({"message": "Patient added successfully"}), 200
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+
+
+
 with app.app_context():
         db.create_all()     
 
