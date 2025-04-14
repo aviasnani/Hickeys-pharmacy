@@ -167,8 +167,11 @@
         })
           .then(function (response) {
             if (response.status !== 200) {
-              console.log(`Response status was not 200: ${response.status}`);
-              return;
+              return response.json().then(function (data) {
+                //   converting response from the server from json to js object and passing it to then function
+                alert(`Error: ${data.error}`); // creating a string to display the data
+                console.log(data); // consoling it to see the data
+              });
             }
             response.json().then(function (data) {
               console.log(data);
