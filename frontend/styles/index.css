@@ -1,0 +1,14 @@
+body{
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#patient-button, #admin-button {
+  width: 30px;
+  height: 30px;
+  background-color: purple;
+
+}
