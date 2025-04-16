@@ -154,63 +154,13 @@
         id="confirm_password"
         placeholder="Confirm your password"
       />
-      <button onclick="submit()">Signup</button>
-      <a href="http://127.0.0.1:3000/staff_login.html">
+      <button id="signup-btn">Signup</button>
+      <a href="/templates/staff/staff_login.html">
         <button>Login</button>
       </a>
       <p id="backend-res"></p>
     </div>
 
-    <script>
-      function submit() {
-        var fname = document.getElementById("fname").value;
-        var lname = document.getElementById("lname").value;
-        var age = document.getElementById("age").value;
-        var phone_number = document.getElementById("phone_number").value;
-        var dob = document.getElementById("dob").value;
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var confirm_password =
-          document.getElementById("confirm_password").value;
-        var data = {
-          first_name: fname,
-          last_name: lname,
-          age: age,
-          phone_number: phone_number,
-          date_of_birth: dob,
-          username: username,
-          password: password,
-          confirm_password: confirm_password,
-        };
-        fetch(`http://127.0.0.1:5000/staff_signup`, {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(data),
-          cache: "no-cache",
-          headers: new Headers({
-            "content-type": "application/json",
-          }),
-        })
-          .then(function (response) {
-            if (response.status !== 200) {
-              return response.json().then(function (data) {
-                let responded = document.getElementById("backend-res");
-                const data_string = `Error: ${data.error}`;
-                responded.innerHTML = data_string;
-                console.log("Data sent from backend to the frontend");
-                console.log(data);
-              });
-            }
-            response.json().then(function (data) {
-              window.location.href = "http://127.0.0.1:3000/staff_login.html";
-              console.log("Data sent from backend to the frontend");
-              console.log(data);
-            });
-          })
-          .catch(function (error) {
-            console.log(`Fetch error: ${error}`);
-          });
-      }
-    </script>
+    <script type="module" src="/static/scripts/staff/signup.js"></script>
   </body>
 </html>

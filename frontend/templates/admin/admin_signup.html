@@ -119,59 +119,13 @@
         id="confirm_password"
         placeholder="Confirm your password"
       />
-      <button onclick="admin_signup()">Signup</button>
+      <button id="signup-btn">Signup</button>
       <p>Already have an account?</p>
       <a href="http://127.0.0.1:3000/admin_login.html">
         <button>Login</button>
       </a>
       <p id="error-div"></p>
     </div>
-
-    <script>
-      function admin_signup() {
-        var first_name = document.getElementById("first_name").value;
-        var last_name = document.getElementById("last_name").value;
-        var email = document.getElementById("email").value;
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var confirm_password =
-          document.getElementById("confirm_password").value;
-        var data = {
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          username: username,
-          password: password,
-          confirm_password: confirm_password,
-        };
-        fetch("http://127.0.0.1:5000/admin_signup", {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(data),
-          cache: "no-cache",
-          headers: new Headers({
-            "content-type": "application/json",
-          }),
-        })
-          .then(function (response) {
-            if (response.status !== 200) {
-              return response.json().then(function (data) {
-                errors_div = document.getElementById("error-div");
-                var data_string = `Error: ${data.error}`;
-                errors_div.innerHTML = data_string;
-                console.log(`Response status was not 200: ${response.status}`);
-                return;
-              });
-            }
-            response.json().then(function (data) {
-              window.location.href = "http://127.0.0.1:3000/admin_login.html";
-              console.log(data);
-            });
-          })
-          .catch(function (error) {
-            console.log(`Fetch error: ${error}`);
-          });
-      }
-    </script>
+    <script type="module" src="/static/scripts/admin/signup.js"></script>
   </body>
 </html>

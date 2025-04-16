@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response, session
-from extensions import bcrypt
+from extensions import bcrypt, db
 from models.admin import Admin
 from models.staff import Staff
-from models.__init__ import db
 from flask_login import login_user, logout_user, current_user, login_required
 
 admin_bp = Blueprint('admin', __name__)

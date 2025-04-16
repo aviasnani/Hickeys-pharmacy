@@ -95,44 +95,13 @@
         id="password"
         placeholder="Enter your password"
       />
-      <button onclick="admin_login()">Login</button>
+      <button id="login-btn">Login</button>
       <p>Don't have an account?</p>
-      <a href="http://127.0.0.1:3000/admin_signup.html">
+      <a href="/templates/admin/admin_login.html">
         <button>Signup</button>
       </a>
       <p id="error"></p>
     </div>
-
-    <script>
-      function admin_login() {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var data = {
-          username: username,
-          password: password,
-        };
-        fetch("http://127.0.0.1:5000/admin_login", {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(data),
-          cache: "no-cache",
-          headers: new Headers({
-            "content-type": "application/json",
-          }),
-        }).then(function (response) {
-          if (response.status !== 200) {
-            return response.json().then(function (data) {
-              let error = document.getElementById("error");
-              error_message = `Error: ${data.error}`;
-              error.innerHTML = error_message;
-            });
-          }
-          response.json().then(function (data) {
-            window.location.href = "http://127.0.0.1:3000/admin_dashboard.html";
-            console.log(`message: ${data.message}`);
-          });
-        });
-      }
-    </script>
+    <script type="module" src="/static/scripts/admin/login.js"></script>
   </body>
 </html>
