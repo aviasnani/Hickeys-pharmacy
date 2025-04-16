@@ -87,7 +87,7 @@
         border-radius: 6px;
       }
 
-      #add-patient-container {
+      #add-staff-container {
         background-color: #fff;
         padding: 20px;
         border-radius: 12px;
@@ -129,7 +129,7 @@
           width: 100%;
         }
 
-        #add-patient-container {
+        #add-staff-container {
           width: 100%;
         }
 
@@ -152,8 +152,8 @@
     <h1 id="h1"></h1>
     <button onclick="logout()">Logout</button>
     <button id="show-add-form">Add</button>
-    <div id="add-patient-container" style="display: none; margin-top: 20px">
-      <h2>Add Patient</h2>
+    <div id="add-staff-container" style="display: none; margin-top: 20px">
+      <h2>Add Staff</h2>
 
       <input
         type="text"
@@ -205,10 +205,10 @@
         name="confirm_password"
         required
       />
-      <button onclick="add_patient()">Add Patient</button>
+      <button onclick="add_staff()">Add Staff</button>
     </div>
     <input type="text" id="search" placeholder="Search by name" name="search" />
-    <button onclick="searchPatient()">Search</button>
+    <button onclick="searchStaff()">Search</button>
     <table id="table">
       <thead>
         <tr>
@@ -239,26 +239,26 @@
               return;
             }
             response.json().then(function (data) {
-              var patients = data.patients;
+              var staff_people = data.staff;
               var admin = data.admin_name;
               var h1 = document.getElementById("h1");
               h1.innerHTML = `Welcome ${admin}`;
               const tableBody = document.getElementById("table-body");
-              patients.forEach((patient) => {
+              staff_people.forEach((staff) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                  <td>${patient.id}</td>
-                  <td>${patient.fname}</td>
-                  <td>${patient.lname}</td>
-                  <td>${patient.age}</td>
-                  <td>${patient.phone}</td>
-                  <td>${patient.dob}</td>
-                  <td>${patient.username}</td>
-                  <td><button onclick=deletePatient(${
-                    patient.id
+                  <td>${staff.id}</td>
+                  <td>${staff.fname}</td>
+                  <td>${staff.lname}</td>
+                  <td>${staff.age}</td>
+                  <td>${staff.phone}</td>
+                  <td>${staff.dob}</td>
+                  <td>${staff.username}</td>
+                  <td><button onclick=deleteStaff(${
+                    staff.id
                   })>Delete</button></td>
-                  <td><button onclick=updatePatient(${JSON.stringify(
-                    patient
+                  <td><button onclick=updateStaff(${JSON.stringify(
+                    staff
                   )})>Update</button></td>
                 `;
                 tableBody.appendChild(row);
@@ -273,7 +273,7 @@
       document
         .getElementById("show-add-form")
         .addEventListener("click", function () {
-          const container = document.getElementById("add-patient-container");
+          const container = document.getElementById("add-staff-container");
           if (container.style.display === "none") {
             container.style.display = "block";
           } else {
@@ -281,7 +281,7 @@
           }
         });
 
-      function add_patient() {
+      function add_staff() {
         const fname = document.getElementById("fname").value;
         const lname = document.getElementById("lname").value;
         const age = document.getElementById("age").value;
@@ -306,7 +306,7 @@
           alert("Passwords do not match");
           return;
         }
-        fetch("http://127.0.0.1:5000/add_patients", {
+        fetch("http://127.0.0.1:5000/add_staff", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -326,7 +326,7 @@
               console.log(data);
 
               const tableBody = document.getElementById("table-body");
-              document.getElementById("add-patient-container").style.display =
+              document.getElementById("add-staff-container").style.display =
                 "none";
               tableBody.innerHTML = ""; // Clear the table body
               dashboardDetails(); // Refresh the dashboard details
@@ -336,13 +336,13 @@
             console.log(`Fetch error: ${error}`);
           });
       }
-      function searchPatient() {
+      function searchStaff() {
         const searchInput = document.getElementById("search").value;
         if (!searchInput) {
           alert("Please enter a medicine name to search.");
           return;
         }
-        fetch("http://127.0.0.1:5000/search_patient", {
+        fetch("http://127.0.0.1:5000/search_staff", {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({ fname: searchInput }),
@@ -361,23 +361,23 @@
               const tableBody = document.getElementById("table-body");
               tableBody.innerHTML = ""; // Clear the table body
               if (data && data.length > 0) {
-                data.forEach((patient) => {
+                data.forEach((staff) => {
                   var row = document.createElement("tr");
                   row.innerHTML = `
-                  <td>${patient.id}</td>
-                  <td>${patient.fname}</td>
-                  <td>${patient.lname}</td>
-                  <td>${patient.age}</td>
-                  <td>${patient.phone}</td>
-                  <td>${patient.dob}</td>
-                  <td>${patient.username}</td>
+                  <td>${staff.id}</td>
+                  <td>${staff.fname}</td>
+                  <td>${staff.lname}</td>
+                  <td>${staff.age}</td>
+                  <td>${staff.phone}</td>
+                  <td>${staff.dob}</td>
+                  <td>${staff.username}</td>
                 `;
                   tableBody.appendChild(row);
                 });
               } else {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                  <td colspan="7">No Patients found with the name ${searchInput}</td>
+                  <td colspan="7">No Staff found with the name ${searchInput}</td>
                 `;
                 tableBody.appendChild(row);
               }
@@ -387,35 +387,35 @@
             console.log(`Fetch error: ${error}`);
           });
       }
-      function updatePatient(patient) {
+      function updateStaff(staff) {
         const row = event.target.closest("tr");
         row.innerHTML = `
-          <td>${patient.id}</td>
-          <td><input type="text" id="edited-fname-${patient.id}" value="${
-          patient.fname
+          <td>${staff.id}</td>
+          <td><input type="text" id="edited-fname-${staff.id}" value="${
+          staff.fname
         }" /></td>
-          <td><input type="text" id="edited-lname-${patient.id}" value="${
-          patient.lname
+          <td><input type="text" id="edited-lname-${staff.id}" value="${
+          staff.lname
         }" /></td>
-          <td><input type="text" id="edited-age-${patient.id}" value="${
-          patient.age
+          <td><input type="text" id="edited-age-${staff.id}" value="${
+          staff.age
         }" /></td>
-          <td><input type="text" id="edited-phone-${patient.id}" value="${
-          patient.phone
+          <td><input type="text" id="edited-phone-${staff.id}" value="${
+          staff.phone
         }" /></td>
-          <td><input type="text" id="edited-dob-${patient.id}" value="${
-          patient.dob
+          <td><input type="text" id="edited-dob-${staff.id}" value="${
+          staff.dob
         }" /></td>
-          <td><input type="text" id="edited-username-${patient.id}" value="${
-          patient.username
+          <td><input type="text" id="edited-username-${staff.id}" value="${
+          staff.username
         }" /></td>
-          <td><button onclick='savePatient(${JSON.stringify(
-            patient
+          <td><button onclick='saveStaff(${JSON.stringify(
+            staff
           )})'>Save</button></td>
         `;
       }
-      function savePatient(patient) {
-        const id = patient.id;
+      function saveStaff(staff) {
+        const id = staff.id;
         const updated_fname = document.getElementById(
           `edited-fname-${id}`
         ).value;
@@ -430,7 +430,7 @@
         const updated_username = document.getElementById(
           `edited-username-${id}`
         ).value;
-        const updatedPatient = {
+        const updatedStaff = {
           id: id,
           fname: updated_fname,
           lname: updated_lname,
@@ -439,10 +439,10 @@
           dob: updated_dob,
           username: updated_username,
         };
-        fetch("http://127.0.0.1:5000/update_patient", {
+        fetch("http://127.0.0.1:5000/update_staff", {
           method: "PUT",
           credentials: "include",
-          body: JSON.stringify(updatedPatient),
+          body: JSON.stringify(updatedStaff),
           cache: "no-cache",
           headers: new Headers({
             "content-type": "application/json",
@@ -465,8 +465,8 @@
           });
       }
 
-      function deletePatient(id) {
-        fetch("http://127.0.0.1:5000/delete_patient", {
+      function deleteStaff(id) {
+        fetch("http://127.0.0.1:5000/delete_staff", {
           method: "DELETE",
           credentials: "include",
           body: JSON.stringify({ id: id }),
@@ -514,7 +514,7 @@
             }
             response.json().then(function (data) {
               //   converting response from the server from json to js object and passing it to then function
-              window.location.href = "http://127.0.0.1:3000/admin_login.html"; // redirecting to the patient dashboard
+              window.location.href = "http://127.0.0.1:3000/admin_login.html"; // redirecting to the staff dashboard
               console.log("Logout Successful"); // consoling it to see the data
             });
           })

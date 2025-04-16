@@ -155,7 +155,7 @@
         placeholder="Confirm your password"
       />
       <button onclick="submit()">Signup</button>
-      <a href="http://127.0.0.1:3000/patient_login.html">
+      <a href="http://127.0.0.1:3000/staff_login.html">
         <button>Login</button>
       </a>
       <p id="backend-res"></p>
@@ -182,7 +182,7 @@
           password: password,
           confirm_password: confirm_password,
         };
-        fetch(`http://127.0.0.1:5000/patient_signup`, {
+        fetch(`http://127.0.0.1:5000/staff_signup`, {
           method: "POST",
           credentials: "include",
           body: JSON.stringify(data),
@@ -202,7 +202,7 @@
               });
             }
             response.json().then(function (data) {
-              window.location.href = "http://127.0.0.1:3000/patient_login.html";
+              window.location.href = "http://127.0.0.1:3000/staff_login.html";
               console.log("Data sent from backend to the frontend");
               console.log(data);
             });

@@ -42,7 +42,7 @@
         background-color: #0056b3;
       }
 
-      #add-patient-container {
+      #add-staff-container {
         background-color: #fff;
         padding: 20px;
         border: 1px solid #ddd;
@@ -98,7 +98,7 @@
       <h1 id="h1">Loading...</h1>
 
       <button id="show-add-form">Add</button>
-      <div id="add-patient-container" style="display: none; margin-top: 20px">
+      <div id="add-staff-container" style="display: none; margin-top: 20px">
         <h2>Add Medicine</h2>
 
         <input type="text" id="name" placeholder="name" name="name" required />
@@ -155,7 +155,7 @@
       document
         .getElementById("show-add-form")
         .addEventListener("click", function () {
-          const container = document.getElementById("add-patient-container");
+          const container = document.getElementById("add-staff-container");
           container.style.display =
             container.style.display === "none" ? "block" : "none";
         });
@@ -190,7 +190,7 @@
             document.getElementById("form").value = "";
             document.getElementById("dosage").value = "";
             document.getElementById("price").value = "";
-            document.getElementById("add-patient-container").style.display =
+            document.getElementById("add-staff-container").style.display =
               "none";
             welcome();
             console.log("Medicine added successfully");
@@ -201,7 +201,7 @@
       }
 
       function welcome() {
-        fetch("http://127.0.0.1:5000/patient_dashboard", {
+        fetch("http://127.0.0.1:5000/staff_dashboard", {
           method: "GET",
           credentials: "include",
           cache: "no-cache",
@@ -217,7 +217,7 @@
           .then((data) => {
             document.getElementById(
               "h1"
-            ).innerHTML = `Welcome, ${data.patient_name}!`;
+            ).innerHTML = `Welcome, ${data.staff_name}!`;
             var tableBody = document.getElementById("table-body");
             tableBody.innerHTML = "";
             data.med.forEach((medicine) => {
@@ -403,7 +403,7 @@
       }
       // Logout function
       function logout() {
-        fetch("http://127.0.0.1:5000/patient_logout", {
+        fetch("http://127.0.0.1:5000/staff_logout", {
           method: "GET",
           credentials: "include",
           cache: "no-cache",
@@ -417,7 +417,7 @@
             return response.json();
           })
           .then(() => {
-            window.location.href = "http://127.0.0.1:3000/patient_login.html";
+            window.location.href = "http://127.0.0.1:3000/staff_login.html";
             console.log("Logout Successful");
           })
           .catch((error) => {
