@@ -207,6 +207,8 @@
       />
       <button onclick="add_patient()">Add Patient</button>
     </div>
+    <input type="text" id="search" placeholder="Search by name" name="search" />
+    <button onclick="searchPatient()">Search</button>
     <table id="table">
       <thead>
         <tr>
@@ -330,7 +332,57 @@
             console.log(`Fetch error: ${error}`);
           });
       }
-
+      function searchPatient() {
+        const searchInput = document.getElementById("search").value;
+        if (!searchInput) {
+          alert("Please enter a medicine name to search.");
+          return;
+        }
+        fetch("http://127.0.0.1:5000/search_patient", {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({ fname: searchInput }),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              if (data && data.length > 0) {
+                data.forEach((patient) => {
+                  var row = document.createElement("tr");
+                  row.innerHTML = `
+                  <td>${patient.id}</td>
+                  <td>${patient.fname}</td>
+                  <td>${patient.lname}</td>
+                  <td>${patient.age}</td>
+                  <td>${patient.phone}</td>
+                  <td>${patient.dob}</td>
+                  <td>${patient.username}</td>
+                `;
+                  tableBody.appendChild(row);
+                });
+              } else {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td colspan="7">No Patients found with the name ${searchInput}</td>
+                `;
+                tableBody.appendChild(row);
+              }
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
       function deletePatient(id) {
         fetch("http://127.0.0.1:5000/delete_patient", {
           method: "DELETE",
