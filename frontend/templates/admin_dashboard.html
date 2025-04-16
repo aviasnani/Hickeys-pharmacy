@@ -244,18 +244,22 @@
               var h1 = document.getElementById("h1");
               h1.innerHTML = `Welcome ${admin}`;
               const tableBody = document.getElementById("table-body");
-              patients.forEach((item) => {
+              patients.forEach((patient) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                  <td>${item.id}</td>
-                  <td>${item.fname}</td>
-                  <td>${item.lname}</td>
-                  <td>${item.age}</td>
-                  <td>${item.phone}</td>
-                  <td>${item.dob}</td>
-                  <td>${item.username}</td>
-                  <td><button onclick=deletePatient(${item.id})>Delete</button></td>
-                  <td><button onclick=updatePatient(${item.id})>Update</button></td>
+                  <td>${patient.id}</td>
+                  <td>${patient.fname}</td>
+                  <td>${patient.lname}</td>
+                  <td>${patient.age}</td>
+                  <td>${patient.phone}</td>
+                  <td>${patient.dob}</td>
+                  <td>${patient.username}</td>
+                  <td><button onclick=deletePatient(${
+                    patient.id
+                  })>Delete</button></td>
+                  <td><button onclick=updatePatient(${JSON.stringify(
+                    patient
+                  )})>Update</button></td>
                 `;
                 tableBody.appendChild(row);
               });
@@ -383,6 +387,84 @@
             console.log(`Fetch error: ${error}`);
           });
       }
+      function updatePatient(patient) {
+        const row = event.target.closest("tr");
+        row.innerHTML = `
+          <td>${patient.id}</td>
+          <td><input type="text" id="edited-fname-${patient.id}" value="${
+          patient.fname
+        }" /></td>
+          <td><input type="text" id="edited-lname-${patient.id}" value="${
+          patient.lname
+        }" /></td>
+          <td><input type="text" id="edited-age-${patient.id}" value="${
+          patient.age
+        }" /></td>
+          <td><input type="text" id="edited-phone-${patient.id}" value="${
+          patient.phone
+        }" /></td>
+          <td><input type="text" id="edited-dob-${patient.id}" value="${
+          patient.dob
+        }" /></td>
+          <td><input type="text" id="edited-username-${patient.id}" value="${
+          patient.username
+        }" /></td>
+          <td><button onclick='savePatient(${JSON.stringify(
+            patient
+          )})'>Save</button></td>
+        `;
+      }
+      function savePatient(patient) {
+        const id = patient.id;
+        const updated_fname = document.getElementById(
+          `edited-fname-${id}`
+        ).value;
+        const updated_lname = document.getElementById(
+          `edited-lname-${id}`
+        ).value;
+        const updated_age = document.getElementById(`edited-age-${id}`).value;
+        const updated_phone = document.getElementById(
+          `edited-phone-${id}`
+        ).value;
+        const updated_dob = document.getElementById(`edited-dob-${id}`).value;
+        const updated_username = document.getElementById(
+          `edited-username-${id}`
+        ).value;
+        const updatedPatient = {
+          id: id,
+          fname: updated_fname,
+          lname: updated_lname,
+          age: updated_age,
+          phone: updated_phone,
+          dob: updated_dob,
+          username: updated_username,
+        };
+        fetch("http://127.0.0.1:5000/update_patient", {
+          method: "PUT",
+          credentials: "include",
+          body: JSON.stringify(updatedPatient),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              dashboardDetails(); // Refresh the dashboard details
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+
       function deletePatient(id) {
         fetch("http://127.0.0.1:5000/delete_patient", {
           method: "DELETE",

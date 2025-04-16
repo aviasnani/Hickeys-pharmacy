@@ -148,6 +148,30 @@ def edit_meds():
     except Exception as e:
         print("Error occurred:", str(e))
         return jsonify({"error": str(e)}), 500
+
+@app.route('/update_patient', methods=['PUT'])
+def update_patient():
+    if not isinstance(current_user, Admin):
+        return jsonify({"error": "Unauthorized access"}), 403
+    try:
+        req = request.get_json()
+        print("Data has been received", req)
+        patient = Patient.query.get(req['id'])
+        if patient:
+            patient.fname = req['fname']
+            patient.lname = req['lname']
+            patient.age = req['age']
+            patient.phone = req['phone']
+            patient.dob = req['dob']
+            patient.username = req['username']
+            db.session.commit()
+            return jsonify({"message": "Patient updated successfully"}), 200
+        else:
+            return jsonify({"error": "Patient not found"}), 404
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+
 '''@app.route('/')
 def index():  
     return render_template('index.html')
