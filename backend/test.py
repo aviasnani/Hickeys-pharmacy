@@ -89,6 +89,24 @@ def add_meds():
     except Exception as e:  # added a try block to check whether the user logged in is an admin or not 
         print("Error occurred:", str(e))
         return jsonify({"error": str(e)}), 500
+@app.route('/search_meds', methods=['POST'])
+def search_meds():
+    req = request.get_json()
+    meds = Meds.query.filter(Meds.name.ilike(req['name'])).all()
+    med_list = []
+    if meds:
+        for med in meds:
+            med_list.append({
+                'id': med.id,
+                'name': med.name,
+                'brand': med.brand,
+                'description': med.description,
+                'form': med.form,
+                'dosage': med.dosage,
+                'price': med.price
+            })
+        return jsonify(med_list), 200
+    
 
 @app.route('/edit_meds', methods=['PUT'])
 def edit_meds():

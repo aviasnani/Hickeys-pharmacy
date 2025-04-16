@@ -99,7 +99,7 @@
 
       <button id="show-add-form">Add</button>
       <div id="add-patient-container" style="display: none; margin-top: 20px">
-        <h2>Add Patient</h2>
+        <h2>Add Medicine</h2>
 
         <input type="text" id="name" placeholder="name" name="name" required />
         <input
@@ -133,7 +133,8 @@
         />
         <button onclick="add_med()">Add Med</button>
       </div>
-
+      <input type="text" id="search" placeholder="search medicine" />
+      <button onclick="searchMed()" id="search-button">Search</button>
       <table id="table">
         <thead>
           <tr>
@@ -232,7 +233,7 @@
                 <td><button onclick='deleteMed(${
                   medicine.id
                 })'>Delete</button></td>
-                <td><button onclick='editMed(${JSON.stringify(
+                <td><button class="edit-med" onclick='editMed(${JSON.stringify(
                   medicine
                 )})'>Edit</button></td>
               `;
@@ -271,6 +272,136 @@
             console.log(`Fetch error: ${error}`);
           });
       }
+      function searchMed() {
+        const searchInput = document.getElementById("search").value;
+        if (!searchInput) {
+          alert("Please enter a medicine name to search.");
+          return;
+        }
+        fetch("http://127.0.0.1:5000/search_meds", {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({ name: searchInput }),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              if (data && data.length > 0) {
+                data.forEach((medicine) => {
+                  var row = document.createElement("tr");
+                  row.innerHTML = `
+                  <td>${medicine.id}</td>
+                  <td>${medicine.name}</td>
+                  <td>${medicine.brand}</td>
+                  <td>${medicine.description}</td>
+                  <td>${medicine.form}</td>
+                  <td>${medicine.dosage}</td>
+                  <td>${medicine.price}</td>
+                `;
+                  tableBody.appendChild(row);
+                });
+              } else {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td colspan="7">No medicines found</td>
+                `;
+                tableBody.appendChild(row);
+              }
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+
+      function editMed(medicine) {
+        const row = event.target.closest("tr");
+        row.innerHTML = `
+          <td>${medicine.id}</td>
+          <td><input type="text" id="edited-name-${medicine.id}" value="${
+          medicine.name
+        }" /></td>
+          <td><input type="text" id="edited-brand-${medicine.id}" value="${
+          medicine.brand
+        }" /></td>
+          <td><input type="text" id="edited-description-${
+            medicine.id
+          }" value="${medicine.description}" /></td>
+          <td><input type="text" id="edited-form-${medicine.id}" value="${
+          medicine.form
+        }" /></td>
+          <td><input type="text" id="edited-dosage-${medicine.id}" value="${
+          medicine.dosage
+        }" /></td>
+          <td><input type="number" id="edited-price-${medicine.id}" value="${
+          medicine.price
+        }" /></td>
+          <td><button onclick='saveMed(${JSON.stringify(
+            medicine
+          )})'>Save</button></td>
+        `;
+      }
+      function saveMed(medicine) {
+        const id = medicine.id;
+        const updated_name = document.getElementById(`edited-name-${id}`).value;
+        const updated_brand = document.getElementById(
+          `edited-brand-${id}`
+        ).value;
+        const updated_description = document.getElementById(
+          `edited-description-${id}`
+        ).value;
+        const updated_form = document.getElementById(`edited-form-${id}`).value;
+        const updated_dosage = document.getElementById(
+          `edited-dosage-${id}`
+        ).value;
+        const updated_price = document.getElementById(
+          `edited-price-${id}`
+        ).value;
+        const updatedMed = {
+          id: id,
+          name: updated_name,
+          brand: updated_brand,
+          description: updated_description,
+          form: updated_form,
+          dosage: updated_dosage,
+          price: updated_price,
+        };
+        fetch("http://127.0.0.1:5000/edit_meds", {
+          method: "PUT",
+          credentials: "include",
+          body: JSON.stringify(updatedMed),
+          cache: "no-cache",
+          headers: new Headers({
+            "content-type": "application/json",
+          }),
+        })
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            response.json().then(function (data) {
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              welcome(); // Refresh the dashboard details
+            });
+          })
+          .catch(function (error) {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+      // Logout function
       function logout() {
         fetch("http://127.0.0.1:5000/patient_logout", {
           method: "GET",
