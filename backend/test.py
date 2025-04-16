@@ -90,7 +90,28 @@ def add_meds():
         print("Error occurred:", str(e))
         return jsonify({"error": str(e)}), 500
 
-
+@app.route('/edit_meds', methods=['PUT'])
+def edit_meds():
+    if not isinstance(current_user, Patient):
+        return jsonify({"error": "Unauthorized access"}), 403
+    try:
+        req = request.get_json()
+        print("Data has been received", req)
+        meds = Meds.query.get(req['id'])
+        if meds:
+            meds.name = req['name']
+            meds.brand = req['brand']
+            meds.description = req['description']
+            meds.form = req['form']
+            meds.dosage = req['dosage']
+            meds.price = req['price']
+            db.session.commit()
+            return jsonify({"message": "Medicine edited successfully"}), 200
+        else:
+            return jsonify({"error": "Medicine not found"}), 404
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
 '''@app.route('/')
 def index():  
     return render_template('index.html')
