@@ -4,84 +4,162 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      input:focus {
+        border-color: purple;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: purple;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: purple;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      p {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+      }
+
+      #backend-res {
+        color: red;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        margin-bottom: 20px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      .table th {
+        background-color: #f2f2f2;
+      }
+
+      .table .info {
+        background-color: #f9f9f9;
+      }
+
+      .table tbody {
+        font-size: 14px;
+        color: #333;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <input
-            type="text"
-            name="first_name"
-            id="fname"
-            placeholder="Enter your first name"
-          />
-          <br />
-          <input
-            type="text"
-            name="last_name"
-            id="lname"
-            placeholder="Enter your last name"
-          />
-          <br />
-          <input
-            type="number"
-            name="age"
-            id="age"
-            placeholder="Enter your age"
-          />
-          <br />
-          <input
-            type="number"
-            name="phone_number"
-            id="phone_number"
-            placeholder="Enter your phone number"
-            min="10"
-          />
-          <br />
-          <input
-            type="date"
-            name="date_of_birth"
-            id="dob"
-            placeholder="Enter your date of birth"
-          />
-          <br />
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Enter your username"
-          />
-          <br />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter your password"
-          />
-          <br />
-          <input
-            type="password"
-            name="confirm_password"
-            id="confirm_password"
-            placeholder="Confirm your password"
-          />
-          <br />
-          <button onclick="submit()">Signup</button>
-          <a href="http://127.0.0.1:3000/patient_login.html">
-            <button>Login</button>
-          </a>
-          <p id="backend-res"></p>
-        </div>
-      </div>
+      <h1>Signup</h1>
+      <input
+        type="text"
+        name="first_name"
+        id="fname"
+        placeholder="Enter your first name"
+      />
+      <input
+        type="text"
+        name="last_name"
+        id="lname"
+        placeholder="Enter your last name"
+      />
+      <input type="number" name="age" id="age" placeholder="Enter your age" />
+      <input
+        type="number"
+        name="phone_number"
+        id="phone_number"
+        placeholder="Enter your phone number"
+        min="10"
+      />
+      <input
+        type="date"
+        name="date_of_birth"
+        id="dob"
+        placeholder="Enter your date of birth"
+      />
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Enter your password"
+      />
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        placeholder="Confirm your password"
+      />
+      <button onclick="submit()">Signup</button>
+      <a href="http://127.0.0.1:3000/patient_login.html">
+        <button>Login</button>
+      </a>
+      <p id="backend-res"></p>
     </div>
-    <table class="table">
-      <tr class="info">
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-      </tr>
-      <tbody class="tableBody"></tbody>
-    </table>
 
     <script>
       function submit() {
@@ -105,32 +183,28 @@
           confirm_password: confirm_password,
         };
         fetch(`http://127.0.0.1:5000/patient_signup`, {
-          method: "POST", // details will be posted to the corresponding route / function in python
-          credentials: "include", // cookies
-          body: JSON.stringify(data), // data to be sent to the server, object 'data' is converted to JSON string
-          cache: "no-cache", // no cache included
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(data),
+          cache: "no-cache",
           headers: new Headers({
-            // headers to be included in the request
             "content-type": "application/json",
           }),
         })
           .then(function (response) {
-            // response from the server
             if (response.status !== 200) {
               return response.json().then(function (data) {
-                //   converting response from the server from json to js object and passing it to then function
-                let responded = document.getElementById("backend-res"); // getting the paragraph tag
-                const data_string = `Error: ${data.error}`; // creating a string to display the data
-                responded.innerHTML = data_string; // displaying the data in the paragraph tag
+                let responded = document.getElementById("backend-res");
+                const data_string = `Error: ${data.error}`;
+                responded.innerHTML = data_string;
                 console.log("Data sent from backend to the frontend");
-                console.log(data); // consoling it to see the data
+                console.log(data);
               });
             }
             response.json().then(function (data) {
-              window.location.href = "http://127.0.0.1:3000/patient_login.html"; //co-pilot
-              //   converting response from the server from json to js object and passing it to then function
+              window.location.href = "http://127.0.0.1:3000/patient_login.html";
               console.log("Data sent from backend to the frontend");
-              console.log(data); // consoling it to see the data
+              console.log(data);
             });
           })
           .catch(function (error) {

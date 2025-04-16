@@ -3,17 +3,253 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .logout-button-container {
+        text-align: right;
+        margin-bottom: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #add-patient-container {
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        background-color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
   </head>
   <body>
-    <h1 id="h1"></h1>
+    <div class="container">
+      <div class="logout-button-container">
+        <button onclick="logout()">Logout</button>
+      </div>
+      <h1 id="h1">Loading...</h1>
 
-    <button onclick="logout()">Logout</button>
+      <button id="show-add-form">Add</button>
+      <div id="add-patient-container" style="display: none; margin-top: 20px">
+        <h2>Add Patient</h2>
+
+        <input type="text" id="name" placeholder="name" name="name" required />
+        <input
+          type="text"
+          id="brand"
+          placeholder="brand"
+          name="brand"
+          required
+        />
+        <input
+          type="text"
+          id="description"
+          placeholder="description"
+          name="description"
+          required
+        />
+        <input type="text" id="form" placeholder="form" name="form" required />
+        <input
+          type="text"
+          id="dosage"
+          placeholder="dosage"
+          name="dosage"
+          required
+        />
+        <input
+          type="number"
+          id="price"
+          placeholder="price"
+          name="price"
+          required
+        />
+        <button onclick="add_med()">Add Med</button>
+      </div>
+
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Description</th>
+            <th>Form</th>
+            <th>Dosage</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
     <script>
-      function dashboardDetails() {
+      document
+        .getElementById("show-add-form")
+        .addEventListener("click", function () {
+          const container = document.getElementById("add-patient-container");
+          container.style.display =
+            container.style.display === "none" ? "block" : "none";
+        });
+
+      function add_med() {
+        var name = document.getElementById("name").value;
+        var brand = document.getElementById("brand").value;
+        var description = document.getElementById("description").value;
+        var form = document.getElementById("form").value;
+        var dosage = document.getElementById("dosage").value;
+        var price = document.getElementById("price").value;
+        var data = { name, brand, description, form, dosage, price };
+
+        fetch("http://127.0.0.1:5000/add_meds", {
+          method: "POST",
+          credentials: "include",
+          cache: "no-cache",
+          headers: new Headers({ "content-type": "application/json" }),
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            return response.json();
+          })
+          .then(() => {
+            document.getElementById("name").value = "";
+            document.getElementById("brand").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("form").value = "";
+            document.getElementById("dosage").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("add-patient-container").style.display =
+              "none";
+            welcome();
+            console.log("Medicine added successfully");
+          })
+          .catch((error) => {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+
+      function welcome() {
         fetch("http://127.0.0.1:5000/patient_dashboard", {
           method: "GET",
           credentials: "include",
+          cache: "no-cache",
+          headers: new Headers({ "content-type": "application/json" }),
+        })
+          .then((response) => {
+            if (response.status !== 200) {
+              console.log(`Response status was not 200: ${response.status}`);
+              return;
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById(
+              "h1"
+            ).innerHTML = `Welcome, ${data.patient_name}!`;
+            var tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = "";
+            data.med.forEach((medicine) => {
+              var row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${medicine.id}</td>
+                <td>${medicine.name}</td>
+                <td>${medicine.brand}</td>
+                <td>${medicine.description}</td>
+                <td>${medicine.form}</td>
+                <td>${medicine.dosage}</td>
+                <td>${medicine.price}</td>
+                <td><button onclick='deleteMed(${
+                  medicine.id
+                })'>Delete</button></td>
+                <td><button onclick='editMed(${JSON.stringify(
+                  medicine
+                )})'>Edit</button></td>
+              `;
+              tableBody.appendChild(row);
+            });
+          })
+          .catch((error) => {
+            console.log(`Fetch error: ${error}`);
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", welcome);
+      function deleteMed(id) {
+        fetch("http://127.0.0.1:5000/delete_meds", {
+          method: "DELETE",
+          credentials: "include",
+          body: JSON.stringify({ id: id }),
           cache: "no-cache",
           headers: new Headers({
             "content-type": "application/json",
@@ -25,41 +261,35 @@
               return;
             }
             response.json().then(function (data) {
-              var patient_name = data.patient_name;
-              var h1 = document.getElementById("h1");
-              h1.innerHTML = `Welcome ${patient_name}`;
+              console.log(data);
+              const tableBody = document.getElementById("table-body");
+              tableBody.innerHTML = ""; // Clear the table body
+              welcome(); // Refresh the dashboard details
             });
           })
           .catch(function (error) {
             console.log(`Fetch error: ${error}`);
           });
       }
-      document.addEventListener("DOMContentLoaded", function () {
-        dashboardDetails();
-      });
       function logout() {
-        fetch(`http://127.0.0.1:5000/patient_logout`, {
-          method: "GET", // details will be posted to the corresponding route / function in python
-          credentials: "include", // cookies
-          cache: "no-cache", // no cache included
-          headers: new Headers({
-            // headers to be included in the request
-            "content-type": "application/json",
-          }),
+        fetch("http://127.0.0.1:5000/patient_logout", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-cache",
+          headers: new Headers({ "content-type": "application/json" }),
         })
-          .then(function (response) {
-            // response from the server
+          .then((response) => {
             if (response.status !== 200) {
               console.log(`Response status was not 200: ${response.status}`);
               return;
             }
-            response.json().then(function (data) {
-              //   converting response from the server from json to js object and passing it to then function
-              window.location.href = "http://127.0.0.1:3000/patient_login.html"; // redirecting to the patient dashboard
-              console.log("Logout Successful"); // consoling it to see the data
-            });
+            return response.json();
           })
-          .catch(function (error) {
+          .then(() => {
+            window.location.href = "http://127.0.0.1:3000/patient_login.html";
+            console.log("Logout Successful");
+          })
+          .catch((error) => {
             console.log(`Fetch error: ${error}`);
           });
       }

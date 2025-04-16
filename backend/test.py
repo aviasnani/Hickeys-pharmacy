@@ -59,6 +59,36 @@ class Admin(UserMixin,db.Model):
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
 
+class Meds(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+    brand = db.Column(db.String(20), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    form = db.Column(db.String(20), nullable=False) # form of the medicine (tablet, syrup, etc.)
+    dosage = db.Column(db.String(20), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+@app.route('/add_meds', methods=['POST'])
+def add_meds():
+    if not isinstance(current_user, Patient):
+        return jsonify({"error": "Unauthorized access"}), 403
+    try:
+        req = request.get_json()
+        print("Data has been received", req)
+        new_meds = Meds(
+            name=req['name'],
+            brand=req['brand'],
+            description=req['description'],
+            form=req['form'],
+            dosage=req['dosage'],
+            price=req['price']
+        )
+        db.session.add(new_meds)
+        db.session.commit()
+        return jsonify({"message": "Medicine added successfully"}), 200
+    except Exception as e:  # added a try block to check whether the user logged in is an admin or not 
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 '''@app.route('/')
@@ -145,13 +175,34 @@ def patient_dashboard():
         if not isinstance(current_user, Patient):
             logout_user()
             return jsonify({"error": "Unauthorized access"}), 403
+        patients = Patient.query.all()
+        patient_list = []
+        for patient in patients:
+            patient_list.append({
+                "id": current_user.id,
+                "fname": current_user.fname,
+                "lname": current_user.lname,
+                "age": current_user.age,
+                "phone": current_user.phone,
+                "dob": current_user.dob,
+                "username": current_user.username,
+            })
+        meds = Meds.query.all()
+        med_list = []
+        for med in meds:
+            med_list.append({
+                "id": med.id,
+                "name": med.name,
+                "brand": med.brand,
+                "description": med.description,
+                "form": med.form,
+                "dosage": med.dosage,
+                "price": med.price
+            })
         
         return jsonify({
-        "patient_name": f'{current_user.fname} {current_user.lname}',
-        "patient_age": current_user.age,
-        "patient_phone": current_user.phone,
-        "patient_dob": current_user.dob,
-        "patient_username": current_user.username,
+        "patient_name": current_user.fname + current_user.lname,
+        "med": med_list
     }), 200
     except Exception as e:
         print("Error occurred:", str(e))
@@ -214,7 +265,7 @@ def admin_logout():
     print("User logged out")
     return jsonify({"message": "Logout successful"}), 200
 
-# co-pilot
+
 @app.route('/delete_patient', methods=['DELETE'])
 def delete_patient():
     try:
@@ -227,6 +278,22 @@ def delete_patient():
             return jsonify({"message": "Patient deleted successfully"}), 200
         else:
             return jsonify({"error": "Patient not found"}), 404
+    except Exception as e:
+        print("Error occurred:", str(e))
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/delete_meds', methods=['DELETE']) # works same as delete patient 
+def delete_meds():
+    try:
+        req = request.get_json()
+        med_id = req['id']
+        med = Meds.query.filter_by(id=med_id).first()
+        if med:
+            db.session.delete(med)
+            db.session.commit()
+            return jsonify({"message": "Medicine deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Medicine not found"}), 404
     except Exception as e:
         print("Error occurred:", str(e))
         return jsonify({"error": str(e)}), 500

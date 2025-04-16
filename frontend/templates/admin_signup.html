@@ -3,58 +3,129 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style></style>
+    <title>Signup</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      input:focus {
+        border-color: purple;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: purple;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: purple;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      p {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+      }
+
+      #error-div {
+        color: red;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
-    <input
-      type="text"
-      name="first_name"
-      id="first_name"
-      placeholder="Enter your first name"
-    />
-    <br />
-    <input
-      type="text"
-      name="last_name"
-      id="last_name"
-      placeholder="Enter your last name"
-    />
-    <br />
-    <input
-      type="email"
-      name="email"
-      id="email"
-      placeholder="Enter your email"
-    />
-    <br />
-    <input
-      type="text"
-      name="username"
-      id="username"
-      placeholder="Enter your username"
-    />
-    <br />
-    <input
-      type="password"
-      name="password"
-      id="password"
-      placeholder="Set your password"
-    />
-    <br />
-    <input
-      type="password"
-      name="confirm_password"
-      id="confirm_password"
-      placeholder="Confirm your password"
-    />
-    <br />
-    <button onclick="admin_signup()">Signup</button> <br />
-    <p>Already have an account?</p>
-    <a href="http://127.0.0.1:3000/admin_login.html">
-      <button>Login</button>
-    </a>
-    <p id="error-div"></p>
+    <div class="container">
+      <h1>Signup</h1>
+      <input
+        type="text"
+        name="first_name"
+        id="first_name"
+        placeholder="Enter your first name"
+      />
+      <input
+        type="text"
+        name="last_name"
+        id="last_name"
+        placeholder="Enter your last name"
+      />
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Enter your email"
+      />
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Set your password"
+      />
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        placeholder="Confirm your password"
+      />
+      <button onclick="admin_signup()">Signup</button>
+      <p>Already have an account?</p>
+      <a href="http://127.0.0.1:3000/admin_login.html">
+        <button>Login</button>
+      </a>
+      <p id="error-div"></p>
+    </div>
 
     <script>
       function admin_signup() {
