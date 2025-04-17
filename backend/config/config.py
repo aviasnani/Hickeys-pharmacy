@@ -8,4 +8,5 @@ if not os.path.exists(instance_path): # (co-pilot)
 class Config:
   SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(instance_path, 'database.db')
   SQLALCHEMY_TRACK_MODIFICATIONS = False  # Avoids a warning
+  SESSION_COOKIE_SECURE = True
   SECRET_KEY = 'Iaminevitable'
