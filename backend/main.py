@@ -43,7 +43,7 @@ def create_app():
     login_manager.unauthorized_handler(unauthorized_handler)
 
     # Enable CORS
-    CORS(app, origins=["http://127.0.0.1:3000", "http://192.168.1.15:3000"], supports_credentials=True)
+    CORS(app, origins=["https://hickeys-frontend-m3xywmzsd-aviasnanis-projects.vercel.app"], supports_credentials=True)
 
     @app.route('/scripts/<path:filename>')
     def serve_scripts(filename):
