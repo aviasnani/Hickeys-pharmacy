@@ -1,8 +1,8 @@
-Pharmacy Inventory Management System
+# Hickeys Pharmacy Inventory Management System
 
 This web application is designed to allow admins to manage staff and inventory for a pharmacy, while staff can manage medicine inventory. The system includes two separate panels: one for admin and another for staff, with different functionalities for each role. It is built using Flask for the backend and HTML and JavaScript for the frontend.
 
-Features
+## Features
 
 Pharmacy Handling Inventory and Managing Users
 • Admin Panel:
@@ -12,18 +12,20 @@ Pharmacy Handling Inventory and Managing Users
 • Staff members can manage the pharmacy’s inventory, including adding, updating, and deleting medicines.
 • Staff can view the current medicine inventory and make necessary changes to it.
 
-Panels
+## Panels
 
 Admin Panel
 • CRUD Operations on Staff: Admins can perform CRUD operations to manage the staff, ensuring that each staff member has the appropriate permissions.
 • Manage Users: Admins can create, edit, and delete staff user accounts.
 • View Inventory: Admins can also access the inventory, although their role is more focused on managing staff.
 
-Staff Panel
+## Staff Panel
+
 • Inventory Management: Staff can add, update, or delete medicines in the inventory, keeping track of quantities, names, and other details related to each medicine.
 • View Inventory: Staff can view the list of medicines available and their details.
 
-Technologies Used
+## Technologies Used
+
 • Backend:
 • Python
 • Flask (Web Framework)
@@ -40,8 +42,10 @@ Technologies Used
 • Version Control:
 • Git (for version control)
 
-How to Run 1. Clone the repository:
-`git clone <repository_url>`
+## How to Run:
+
+1. Clone the repository:
+   `git clone <repository_url>`
 
 2. Install dependencies:
    `pip install -r requirements.txt`
@@ -51,7 +55,7 @@ How to Run 1. Clone the repository:
    `python3 main.py`
 5. The app should now be running locally on http://localhost:5000/.
 
-## Attributions:
+## References:
 
 1. OpenAI: for assisting in code snippets
 2. Amazon Q Developer: For the insight and integration of AWS RDS into the backend as well as resolving errors and bugs.
