@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      input:focus {
+        border-color: purple;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: purple;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: purple;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      p {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+      }
+
+      #backend-res {
+        color: red;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Login</h1>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Enter your username"
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Enter your password"
+      />
+      <button id="login-btn">Login</button>
+      <a href="/staff_signup.html">
+        <button>Signup</button>
+      </a>
+      <p id="backend-res"></p>
+    </div>
+    <script type="module" src="/static/scripts/staff/login.js"></script>
+  </body>
+</html>

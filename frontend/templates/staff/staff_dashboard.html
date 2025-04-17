@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .logout-button-container {
+        text-align: right;
+        margin-bottom: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #add-staff-container {
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        background-color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logout-button-container">
+        <button id="logout-btn">Logout</button>
+      </div>
+      <h1 id="h1">Loading...</h1>
+
+      <button id="show-add-form">Add</button>
+      <div id="add-staff-container" style="display: none; margin-top: 20px">
+        <h2>Add Medicine</h2>
+
+        <input type="text" id="name" placeholder="name" name="name" required />
+        <input
+          type="text"
+          id="brand"
+          placeholder="brand"
+          name="brand"
+          required
+        />
+        <input
+          type="text"
+          id="description"
+          placeholder="description"
+          name="description"
+          required
+        />
+        <input type="text" id="form" placeholder="form" name="form" required />
+        <input
+          type="text"
+          id="dosage"
+          placeholder="dosage"
+          name="dosage"
+          required
+        />
+        <input
+          type="number"
+          id="price"
+          placeholder="price"
+          name="price"
+          required
+        />
+        <button id="add-med-btn">Add Med</button>
+      </div>
+      <input type="text" id="search" placeholder="search medicine" />
+      <button id="search-button">Search</button>
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Description</th>
+            <th>Form</th>
+            <th>Dosage</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <script type="module" src="/static/scripts/staff/dashboard.js"></script>
+  </body>
+</html>
