@@ -25,7 +25,7 @@ function handleSignup() {
     password: password,
     confirm_password: confirm_password,
   };
-  apiPost(`https://hickeys-backend-c66t793lq-aviasnanis-projects.vercel.app/staff_signup`, data)
+  apiPost(`https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/staff_signup`, data)
     .then(response => {
       if (response.error) {
           let responded = document.getElementById("backend-res");

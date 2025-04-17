@@ -30,7 +30,7 @@ document
         var price = document.getElementById("price").value;
         var data = { name, brand, description, form, dosage, price };
 
-        apiPost("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/add_meds", data)
+        apiPost("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/add_meds", data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);
@@ -56,7 +56,7 @@ document
       }
 
       function welcome() {
-        apiGet("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/staff_dashboard")
+        apiGet("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/staff_dashboard")
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -97,7 +97,7 @@ document
 
 
       function deleteMed(id) {
-        apiDelete("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/delete_meds", { id: id })
+        apiDelete("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/delete_meds", { id: id })
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -121,7 +121,7 @@ document
           alert("Please enter a medicine name to search.");
           return;
         }
-        apiPost("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/search_meds", data)
+        apiPost("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/search_meds", data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -213,7 +213,7 @@ document
           dosage: updated_dosage,
           price: updated_price,
         };
-        apiPut("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/edit_meds", updatedMed)
+        apiPut("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/edit_meds", updatedMed)
           .then(response =>{
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -232,7 +232,7 @@ document
       }
       // Logout function
       function logout() {
-        apiGet("https://hickeys-backend-8cknm0mi7-aviasnanis-projects.vercel.app/staff_logout")
+        apiGet("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/staff_logout")
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);
