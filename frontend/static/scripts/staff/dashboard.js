@@ -120,7 +120,7 @@ document
         if (!searchInput) {
           alert("Please enter a medicine name to search.");
           return;
-        }s
+        }
         apiPost("http://127.0.0.1:5000/search_meds", data)
           .then(response => {
             if (response.error) {
