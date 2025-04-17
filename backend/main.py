@@ -16,6 +16,7 @@ from flask_cors import CORS
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    CORS(app, origins=["https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app"], supports_credentials=True)
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager = LoginManager()
@@ -43,7 +44,6 @@ def create_app():
     login_manager.unauthorized_handler(unauthorized_handler)
 
     # Enable CORS
-    CORS(app, origins=["https://hickeys-frontend-93vat3jud-aviasnanis-projects.vercel.app"], supports_credentials=True)
 
     @app.route('/scripts/<path:filename>')
     def serve_scripts(filename):
