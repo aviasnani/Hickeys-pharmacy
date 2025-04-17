@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "name": "hickeys-frontend",
+      "rootDirectory": "frontend"
+    },
+    {
+      "name": "hickeys-backend",
+      "rootDirectory": "backend"
+    }
+  ]
+}
