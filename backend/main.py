@@ -16,7 +16,14 @@ from flask_cors import CORS
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    CORS(app, origins=["https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app"], supports_credentials=True)
+    CORS(app, 
+         origins=[
+             "https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app",
+             "https://hickeys-backend-c66t793lq-aviasnanis-projects.vercel.app"
+         ],
+         supports_credentials=True,
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager = LoginManager()
@@ -31,7 +38,13 @@ def create_app():
       elif role == 'staff':
           return Staff.query.filter_by(id=int(user_id)).first()
       return None
-
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', 'https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
     # Unauthorized handler
     def unauthorized_handler():
         if request.path.startswith('/admin'):
