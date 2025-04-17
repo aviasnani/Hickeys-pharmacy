@@ -4,4 +4,4 @@ Flask-Login
 Flask-CORS
 bcrypt
 gunicorn
-mysql-connector-python
+sqlite3
