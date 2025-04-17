@@ -21,7 +21,7 @@ function handleSignup() {
     password: password,
     confirm_password: confirm_password,
   };
-  apiPost("http://127.0.0.1:5000/admin_signup", data)
+  apiPost("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/admin_signup", data)
     .then(response => {
       if (response.error) {
           errors_div = document.getElementById("error-div");

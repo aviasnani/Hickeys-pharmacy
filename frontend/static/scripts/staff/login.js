@@ -12,7 +12,7 @@ function handleLogin() {
     username: username,
     password: password,
   };
-  apiPost(`http://127.0.0.1:5000/staff_login`, data)
+  apiPost(`https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/staff_login`, data)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.status}`);

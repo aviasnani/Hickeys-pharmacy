@@ -30,7 +30,7 @@ document
         var price = document.getElementById("price").value;
         var data = { name, brand, description, form, dosage, price };
 
-        apiPost("http://127.0.0.1:5000/add_meds", data)
+        apiPost("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/add_meds", data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);
@@ -56,7 +56,7 @@ document
       }
 
       function welcome() {
-        apiGet("http://127.0.0.1:5000/staff_dashboard")
+        apiGet("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/staff_dashboard")
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -97,7 +97,7 @@ document
 
 
       function deleteMed(id) {
-        apiDelete("http://127.0.0.1:5000/delete_meds", { id: id })
+        apiDelete("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/delete_meds", { id: id })
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -121,7 +121,7 @@ document
           alert("Please enter a medicine name to search.");
           return;
         }
-        apiPost("http://127.0.0.1:5000/search_meds", data)
+        apiPost("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/search_meds", data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -213,7 +213,7 @@ document
           dosage: updated_dosage,
           price: updated_price,
         };
-        apiPut("http://127.0.0.1:5000/edit_meds", updatedMed)
+        apiPut("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/edit_meds", updatedMed)
           .then(response =>{
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -232,7 +232,7 @@ document
       }
       // Logout function
       function logout() {
-        apiGet("http://127.0.0.1:5000/staff_logout")
+        apiGet("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/staff_logout")
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);
