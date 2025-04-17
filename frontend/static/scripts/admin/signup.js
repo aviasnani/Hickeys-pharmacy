@@ -21,7 +21,7 @@ function handleSignup() {
     password: password,
     confirm_password: confirm_password,
   };
-  apiPost("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app/admin_signup", data)
+  apiPost("https://hickeys-backend-c66t793lq-aviasnanis-projects.vercel.app/admin_signup", data)
     .then(response => {
       if (response.error) {
           errors_div = document.getElementById("error-div");

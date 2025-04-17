@@ -12,7 +12,7 @@ function handleLogin() {
     username: username,
     password: password,
   };
-  apiPost("https://hickeys-pharmacy-ejpk67g7i-aviasnanis-projects.vercel.app0/admin_login", data)
+  apiPost("https://hickeys-backend-c66t793lq-aviasnanis-projects.vercel.app/admin_login", data)
   .then(response => {
     if (response.error) {
         let error = document.getElementById("error");
