@@ -31,6 +31,11 @@
       .logo {
         font-size: 24px;
         font-weight: bold;
+        color: white;
+      }
+
+      .logo img {
+        height: 90px; /* Adjust the size of the logo */
       }
 
       .top-buttons {
@@ -149,12 +154,18 @@
     </style>
   </head>
   <body>
-    <h1 id="h1"></h1>
-    <button id="logout-btn">Logout</button>
-    <button id="show-add-form">Add</button>
-    <div id="add-staff-container" style="display: none; margin-top: 20px">
-      <h2>Add Staff</h2>
+    <div class="top-bar">
+      <div class="logo">
+        <img src="/images/logo.jpg" alt="Logo" />
+      </div>
+      <div class="top-buttons">
+        <button style="color: purple" id="show-add-form">Add User</button>
+        <button style="color: purple" id="logout-btn">Logout</button>
+      </div>
+    </div>
 
+    <h1 id="h1"></h1>
+    <div id="add-staff-container" style="display: none; margin-top: 20px">
       <input
         type="text"
         id="fname"

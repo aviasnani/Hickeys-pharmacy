@@ -45,7 +45,7 @@ Admin Panel
 ## How to Run:
 
 1. Clone the repository:
-   `git clone <repository_url>`
+   `git clone https://github.com/aviasnani/Hickeys-pharmacy.git`
 
 2. Install dependencies:
    `pip install -r requirements.txt`

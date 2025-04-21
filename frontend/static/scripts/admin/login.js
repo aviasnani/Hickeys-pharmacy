@@ -17,7 +17,7 @@ function handleLogin() {
   .then(response => {
     if (response.error) {
         let error = document.getElementById("error");
-        error_message = `Error: ${response.error}`;
+        let error_message = `Error: ${response.error}`;
         error.innerHTML = error_message;
       }else{
         window.location.href = "/templates/admin/admin_dashboard.html";

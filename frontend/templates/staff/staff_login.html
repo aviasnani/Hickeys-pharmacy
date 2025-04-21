@@ -78,9 +78,24 @@
         font-size: 14px;
         margin-top: 10px;
       }
+      #logo {
+        height: 80px;
+        max-width: 200px;
+        object-fit: contain;
+      }
+      #logo:hover {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
+    <!-- Logo -->
+    <div style="position: absolute; top: 20px; left: 20px">
+      <a href="/index.html">
+        <img src="/images/logo.jpg" alt="Hickey's Pharmacy Logo" id="logo" />
+      </a>
+    </div>
+
     <div class="container">
       <h1>Login</h1>
       <input

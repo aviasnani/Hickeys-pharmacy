@@ -24,8 +24,8 @@ function handleSignup() {
   apiPost("http://127.0.0.1:5000/admin_signup", data)
     .then(response => {
       if (response.error) {
-          errors_div = document.getElementById("error-div");
-          var data_string = `Error: ${data.error}`;
+          let errors_div = document.getElementById("error-div");
+          var data_string = `Error: ${response.error}`;
           errors_div.innerHTML = data_string;
           console.log(`Response status was not 200: ${response.error}`);
       }else{

@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("logout-btn");
   btn.addEventListener("click", logout);
 
-  const btnAddMed = document.getElementById("add-staff-btn");
-  btnAddMed.addEventListener("click", addStaff);
+  const btnAddStaff = document.getElementById("add-staff-btn");
+  btnAddStaff.addEventListener("click", addStaff);
 
   const searchButton = document.getElementById("search-btn");
   searchButton.addEventListener("click", searchStaff);
