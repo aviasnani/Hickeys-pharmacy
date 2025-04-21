@@ -1,4 +1,5 @@
 import {apiGet, apiPost, apiDelete, apiPut} from "../common/api.js";
+import{API_BASE_URL} from "../common/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("logout-btn");
@@ -30,7 +31,7 @@ document
         var price = document.getElementById("price").value;
         var data = { name, brand, description, form, dosage, price };
 
-        apiPost("http://127.0.0.1:5000/add_meds", data)
+        apiPost(`${API_BASE_URL}/add_meds`, data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);
@@ -56,7 +57,7 @@ document
       }
 
       function welcome() {
-        apiGet("http://127.0.0.1:5000/staff_dashboard")
+        apiGet(`${API_BASE_URL}/staff_dashboard`)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -97,7 +98,7 @@ document
 
 
       function deleteMed(id) {
-        apiDelete("http://127.0.0.1:5000/delete_meds", { id: id })
+        apiDelete(`${API_BASE_URL}/delete_meds`, { id: id })
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -121,7 +122,7 @@ document
           alert("Please enter a medicine name to search.");
           return;
         }
-        apiPost("http://127.0.0.1:5000/search_meds", data)
+        apiPost(`${API_BASE_URL}/search_meds`, data)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -213,7 +214,7 @@ document
           dosage: updated_dosage,
           price: updated_price,
         };
-        apiPut("http://127.0.0.1:5000/edit_meds", updatedMed)
+        apiPut(`${API_BASE_URL}/edit_meds`, updatedMed)
           .then(response =>{
             if (response.error) {
               console.log(`Response status was not 200: ${response.error}`);
@@ -232,7 +233,7 @@ document
       }
       // Logout function
       function logout() {
-        apiGet("http://127.0.0.1:5000/staff_logout")
+        apiGet(`${API_BASE_URL}/staff_logout`)
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);

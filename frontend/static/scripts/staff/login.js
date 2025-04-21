@@ -1,4 +1,5 @@
 import {apiPost} from "../common/api.js";
+import{API_BASE_URL} from "../common/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("login-btn");
@@ -12,7 +13,7 @@ function handleLogin() {
     username: username,
     password: password,
   };
-  apiPost(`http://127.0.0.1:5000/staff_login`, data)
+  apiPost(`${API_BASE_URL}/staff_login`, data)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.status}`);

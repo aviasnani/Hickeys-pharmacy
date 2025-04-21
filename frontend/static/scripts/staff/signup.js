@@ -1,4 +1,5 @@
 import {apiPost} from "../common/api.js";
+import{API_BASE_URL} from "../common/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("signup-btn");
@@ -25,7 +26,7 @@ function handleSignup() {
     password: password,
     confirm_password: confirm_password,
   };
-  apiPost(`http://127.0.0.1:5000/staff_signup`, data)
+  apiPost(`${API_BASE_URL}/staff_signup`, data)
     .then(response => {
       if (response.error) {
           let responded = document.getElementById("backend-res");

@@ -1,4 +1,5 @@
 import {apiGet, apiPost, apiDelete, apiPut} from "../common/api.js";
+import{API_BASE_URL} from "../common/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("logout-btn");
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function dashboardDetails() {
-  apiGet("http://127.0.0.1:5000/admin_dashboard")
+  apiGet(`${API_BASE_URL}/admin_dashboard`)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -92,7 +93,7 @@ function addStaff() {
     alert("Passwords do not match");
     return;
   }
-  apiPost("http://127.0.0.1:5000/add_staff",data)
+  apiPost(`${API_BASE_URL}/add_staff`,data)
     .then(response => {
       if (response.error) {
           console.log(response.error); 
@@ -118,7 +119,7 @@ function searchStaff() {
 
   const data = { fname: searchInput };  // Define the data object
 
-  apiPost("http://127.0.0.1:5000/search_staff", data)
+  apiPost(`${API_BASE_URL}/search_staff`, data)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -207,7 +208,7 @@ function saveStaff(staff) {
     dob: updated_dob,
     username: updated_username,
   };
-  apiPut("http://127.0.0.1:5000/update_staff", updatedStaff)
+  apiPut(`${API_BASE_URL}/update_staff`, updatedStaff)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -226,7 +227,7 @@ function saveStaff(staff) {
 }
 
 function deleteStaff(id) {
-  apiDelete("http://127.0.0.1:5000/delete_staff", { id: id })
+  apiDelete(`${API_BASE_URL}/delete_staff`, { id: id })
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -245,7 +246,7 @@ function deleteStaff(id) {
 
 
 function logout() {
-  apiGet(`http://127.0.0.1:5000/admin_logout`)
+  apiGet(`${API_BASE_URL}/admin_logout`)
     .then(response =>  {
       // response from the server
       if (response.error) {
