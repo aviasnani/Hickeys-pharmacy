@@ -15,13 +15,12 @@ Pharmacy Handling Inventory and Managing Users
 ## Panels
 
 Admin Panel
-• CRUD Operations on Staff: Admins can perform CRUD operations to manage the staff, ensuring that each staff member has the appropriate permissions.
+• CRUD Operations on Staff: Admins can perform CRUD operations to manage the staff.
 • Manage Users: Admins can create, edit, and delete staff user accounts.
-• View Inventory: Admins can also access the inventory, although their role is more focused on managing staff.
 
 ## Staff Panel
 
-• Inventory Management: Staff can add, update, or delete medicines in the inventory, keeping track of quantities, names, and other details related to each medicine.
+• Inventory Management: Staff can add, update, or delete medicines in the inventory, keeping track of names, and other details related to each medicine.
 • View Inventory: Staff can view the list of medicines available and their details.
 
 ## Technologies Used
@@ -31,13 +30,11 @@ Admin Panel
 • Flask (Web Framework)
 • Flask-SQLAlchemy (Database management)
 • Flask-Login (User authentication)
-• SQLite (Local development database, can be swapped with AWS RDS for production)
 • Frontend:
 • HTML (Structure)
 • CSS (Styling)
 • JavaScript (API calls and frontend logic using Fetch API)
-• Database:
-• AWS RDS (for production)
+• Database: SQL
 • SQLite (for local development)
 • Version Control:
 • Git (for version control)
@@ -57,9 +54,8 @@ Admin Panel
 
 ## References:
 
-1. OpenAI: for assisting in code snippets
-2. Amazon Q Developer: For the insight and integration of AWS RDS into the backend as well as resolving errors and bugs.
-3. W3Schools: For helpful tutorials and references regarding HTML, CSS, and JavaScript.
+1. OpenAI: for assisting in code snippets such as API helpers (apiPost, apiDelete, apiPut, apiGet) in frontend/static/scripts/common/api.js and resolving any bugs and errors.
+2. Amazon Q Developer: Resolving errors and bugs.
+3. W3Schools: For helpful tutorials and references regarding HTML, CSS, and JavaScript. https://www.w3schools.com
 4. Fetch APIs (Julian Nash): https://www.youtube.com/watch?v=QKcVjdLEX_s&t=165s
 5. Flask CRUD Operations (Parwiz Forogh): https://www.youtube.com/watch?v=XTpLbBJTOM4&t=3306s
-6. 3schools: https://www.w3schools.com
