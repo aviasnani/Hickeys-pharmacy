@@ -92,7 +92,7 @@ function addStaff() {
     alert("Passwords do not match");
     return;
   }
-  apiPost("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/add_staff",data)
+  apiPost("http://127.0.0.1:5000/add_staff",data)
     .then(response => {
       if (response.error) {
           console.log(response.error); 
@@ -118,7 +118,7 @@ function searchStaff() {
 
   const data = { fname: searchInput };  // Define the data object
 
-  apiPost("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/search_staff", data)
+  apiPost("http://127.0.0.1:5000/search_staff", data)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -207,7 +207,7 @@ function saveStaff(staff) {
     dob: updated_dob,
     username: updated_username,
   };
-  apiPut("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/update_staff", updatedStaff)
+  apiPut("http://127.0.0.1:5000/update_staff", updatedStaff)
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -226,7 +226,7 @@ function saveStaff(staff) {
 }
 
 function deleteStaff(id) {
-  apiDelete("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/delete_staff", { id: id })
+  apiDelete("http://127.0.0.1:5000/delete_staff", { id: id })
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);

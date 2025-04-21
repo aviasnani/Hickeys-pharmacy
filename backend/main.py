@@ -41,7 +41,7 @@ def create_app():
 
     login_manager.unauthorized_handler(unauthorized_handler)
 
-    CORS(app, origins='http://127.0.0.1:3000', supports_credentials=True)
+    CORS(app, supports_credentials=True)
 
     @app.route('/scripts/<path:filename>')
     def serve_scripts(filename):
