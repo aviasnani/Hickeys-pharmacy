@@ -14,6 +14,7 @@ function handleSignup() {
   var password = document.getElementById("password").value;
   var confirm_password =
     document.getElementById("confirm_password").value;
+  var secret_key = document.getElementById("secret_key").value;
   var data = {
     first_name: first_name,
     last_name: last_name,
@@ -21,6 +22,7 @@ function handleSignup() {
     username: username,
     password: password,
     confirm_password: confirm_password,
+    secret_key: secret_key
   };
   apiPost(`${API_BASE_URL}/admin_signup`, data)
     .then(response => {

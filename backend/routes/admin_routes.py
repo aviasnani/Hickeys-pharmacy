@@ -12,6 +12,9 @@ admin_bp = Blueprint('admin', __name__)
 def admin_signup():
     req = request.get_json()
     print("Data has been received", req)
+    secret_key = 'Badbunny!31'
+    if req['secret_key'] != secret_key:
+        return jsonify({"error": "Invalid secret key"}), 400
     res = make_response(jsonify(req), 200)
     existing_username = Admin.query.filter_by(username=req['username']).first() # queries the database for the username and checks if the entered username matches any of the usernames in the database
     if existing_username:
