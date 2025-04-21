@@ -1,9 +1,12 @@
 import os
 
- 
+basedir = os.path.abspath(os.path.dirname(__file__)) # (co-pilot)
+instance_path = os.path.join(basedir, '..', 'instance')  # One level up
+if not os.path.exists(instance_path): # (co-pilot)
+    os.makedirs(instance_path) # (co-pilot) 
 
 class Config:
-  SQLALCHEMY_DATABASE_URI = 'mysql://admin:Thisismydatabase/database.czg8iiuiehd4.eu-west-1.rds.amazonaws.com:3306/database'
+  SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(instance_path, 'database.db')
   SQLALCHEMY_TRACK_MODIFICATIONS = False  # Avoids a warning
   SESSION_COOKIE_SECURE = True
   SECRET_KEY = 'Iaminevitable'

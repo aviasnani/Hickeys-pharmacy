@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function dashboardDetails() {
-  apiGet("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/admin_dashboard")
+  apiGet("http://127.0.0.1:5000/admin_dashboard")
     .then(response => {
       if (response.error) {
         console.log(`Response status was not 200: ${response.error}`);
@@ -245,7 +245,7 @@ function deleteStaff(id) {
 
 
 function logout() {
-  apiGet(`https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/admin_logout`)
+  apiGet(`http://127.0.0.1:5000/admin_logout`)
     .then(response =>  {
       // response from the server
       if (response.error) {

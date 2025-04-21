@@ -232,7 +232,7 @@ document
       }
       // Logout function
       function logout() {
-        apiGet("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/staff_logout")
+        apiGet("http://127.0.0.1:5000/staff_logout")
           .then(response => {
             if (response.error) {
               console.log(`Response status was not 200: ${response.status}`);

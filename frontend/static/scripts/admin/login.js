@@ -12,7 +12,8 @@ function handleLogin() {
     username: username,
     password: password,
   };
-  apiPost("https://hickeys-backend-o3fasm9eb-aviasnanis-projects.vercel.app/admin_login", data)
+  console.log(data);
+  apiPost("http://127.0.0.1:5000/admin_login", data)
   .then(response => {
     if (response.error) {
         let error = document.getElementById("error");
@@ -24,5 +25,6 @@ function handleLogin() {
     }
   ).catch(function (error) {
     console.log(`Fetch error: ${error}`);
+    console.log("Error: " + error);
   });
 }

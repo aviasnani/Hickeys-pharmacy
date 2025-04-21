@@ -16,14 +16,6 @@ from flask_cors import CORS
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    CORS(app, 
-         origins=[
-             "https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app",
-             "https://hickeys-backend-c66t793lq-aviasnanis-projects.vercel.app"
-         ],
-         supports_credentials=True,
-         allow_headers=["Content-Type", "Authorization"],
-         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager = LoginManager()
@@ -38,13 +30,7 @@ def create_app():
       elif role == 'staff':
           return Staff.query.filter_by(id=int(user_id)).first()
       return None
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', 'https://hickeys-frontend-68msvomgl-aviasnanis-projects.vercel.app')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+
     # Unauthorized handler
     def unauthorized_handler():
         if request.path.startswith('/admin'):
@@ -53,19 +39,17 @@ def create_app():
             login_manager.login_view = 'staff_login'
         return jsonify({"error": "Please log in"}), 401
 
-    # Set the unauthorized handler
     login_manager.unauthorized_handler(unauthorized_handler)
 
-    # Enable CORS
+    CORS(app, origins='http://127.0.0.1:3000', supports_credentials=True)
 
     @app.route('/scripts/<path:filename>')
     def serve_scripts(filename):
         script_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frontend', 'static', 'scripts')
         return send_from_directory(script_folder, filename)
     with app.app_context():
-        db.create_all()  # Create tables
+        db.create_all() 
 
-    # Register Blueprints (optional)
     app.register_blueprint(staff_bp)
     app.register_blueprint(admin_bp)
 
