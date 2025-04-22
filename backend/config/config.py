@@ -10,3 +10,5 @@ class Config:
   SQLALCHEMY_TRACK_MODIFICATIONS = False  # Avoids a warning
   SESSION_COOKIE_SECURE = True
   SECRET_KEY = 'Iaminevitable'
+  SESSION_COOKIE_SAMESITE = 'None'
+  SESSION_COOKIE_SECURE = True
