@@ -41,7 +41,7 @@ def create_app():
 
     login_manager.unauthorized_handler(unauthorized_handler)
 
-    CORS(app,origins=["https://hickeys-pharmacy-4pda6nvz3-aviasnanis-projects.vercel.app"], supports_credentials=True)
+    CORS(app, supports_credentials=True)
 
     @app.route('/scripts/<path:filename>')
     def serve_scripts(filename):
