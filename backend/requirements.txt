@@ -4,4 +4,3 @@ Flask-Login
 Flask-CORS
 bcrypt
 gunicorn
-sqlite3
