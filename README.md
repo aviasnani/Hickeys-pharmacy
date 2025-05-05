@@ -59,3 +59,8 @@ Admin Panel
 3. W3Schools: For helpful tutorials and references regarding HTML, CSS, and JavaScript. https://www.w3schools.com
 4. Fetch APIs (Julian Nash): https://www.youtube.com/watch?v=QKcVjdLEX_s&t=165s
 5. Flask CRUD Operations (Parwiz Forogh): https://www.youtube.com/watch?v=XTpLbBJTOM4&t=3306s
+
+## License:
+
+This project was originally developed as part of an academic assignment for the MSc Information Systems with Computing program at Dublin Business School.  
+It is shared here for portfolio and demonstration purposes only.
